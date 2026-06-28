@@ -1,0 +1,689 @@
+{
+    "visitors-index" : {
+        "registeration-prompt-box": {
+            "title": "مرحباً بكم في ميسو كارد",
+            "description": "أنشئ حساباً أو سجل الدخول للوصول إلى جميع ميزات التطبيق",
+            "register-button": "تسجيل",
+            "login-button": "الدخول"
+        },
+        "sidebar-navigation": {
+            "navigation": "القائمة",
+            "home": "الرئيسية",
+            "about": "من نحن"
+        },
+        "search-bar": {
+            "text": "بحث"
+        },
+        "search": {
+            "no-results": "لا توجد نتائج"
+        },
+        "popup_messages": {
+            "login_warn": "يجب تسجيل الدخول أولاً"
+        }
+    },
+    "registeration": {
+        "form": {
+            "description": "أنشئ حساباً أو سجل الدخول للوصول إلى جميع ميزات التطبيق",
+            "firstname": {
+                "label": "الاسم الأول",
+                "placeholder": "أدخل اسمك الأول",
+                "patternMessage": "يجب أن يكون الاسم الأول من 2 إلى 30 حرفاً ويمكن أن يحتوي على أحرف ومسافات وشرطات"
+            },
+            "lastname": {
+                "label": "الاسم الأخير",
+                "placeholder": "أدخل اسمك الأخير",
+                "patternMessage": "يجب أن يكون الاسم الأخير من 2 إلى 30 حرفاً ويمكن أن يحتوي على أحرف ومسافات وشرطات"
+            },
+            "country": {
+                "label": "الدولة",
+                "placeholder": "اختر دولتك"
+            },
+            "phone": {
+                "label": "رقم الهاتف",
+                "placeholder": "أدخل رقم هاتفك",
+                "patternMessage": "الرجاء إدخال رقم هاتف صحيح"
+            },
+            "email": {
+                "label": "البريد الإلكتروني",
+                "placeholder": "أدخل بريدك الإلكتروني",
+                "patternMessage": "الرجاء إدخال بريد إلكتروني صحيح"
+            },
+            "password": {
+                "label": "كلمة المرور",
+                "placeholder": "أدخل كلمة المرور",
+                "patternMessage": "يجب أن تكون كلمة المرور من 8 إلى 20 حرفًا ويمكن أن تحتوي على أحرف، أرقام، ورموز"
+            },
+            "confirmPassword": {
+                "label": "تأكيد كلمة المرور",
+                "placeholder": "تأكيد كلمة المرور",
+                "patternMessage": "من فضلك ادخل كلمة مرور صحيحة"
+            },
+            "googleSigninButton": "تسجيل باستخدام جوجل",
+            "facebookSigninButton": "تسجيل باستخدام فيسبوك",
+            "registerButton": "تسجيل",
+            "question": "هل لديك حساب؟",
+            "loginButton": "سجل الدخول هنا"
+        }
+            },
+    "completeRegisteration": {
+        "form": {
+            "description": "اكمل التسجيل بأضافة رقم هاتفك",
+            "country": {
+                "label": "البلد",
+                "placeholder": "اختر بلدك"
+            },
+            "phone": {
+                "label": "رقم الهاتف",
+                "placeholder": "أدخل رقم هاتفك",
+                "patternMessage": "من فضلك ادخل رقم صحيح"
+            },
+            "completeButton": "أكمل التسجيل",
+            "selectCountry": "اختر بلدك",
+            "enterPhoneNumber": "أدخل رقم هاتفك",
+            "redirectMessage": "تم اكتمال التسجيل بنجاح، يتم التوجيه...",
+            "errorOccured": "حدث خطأ",
+            "networkError": "حدث خطأ بالشبكه، أعد المحاولة"
+        }
+    },
+    "login": {
+        "form": {
+            "description": "سجل الدخول لحسابك",
+        "email": {
+                "label": "البريد الالكتروني",
+                "placeholder": "أدخل بريدك الالكتروني",
+                "patternMessage": "من فضلك ادخل بريد صحيح"
+        },
+        "password": {
+            "label": "كلمة المرور",
+            "placeholder": "أدخل كلمة المرور",
+            "patternMessage": "من فضلك ادخل كلمة مرور صحيحة"
+        },
+        "forgotPasswordButton": "نسيت كلمة المرور؟",
+        "loginButton": "سجل الدخول هنا",
+        "googleSigninButton": "تسجيل باستخدام جوجل",
+        "facebookSigninButton": "تسجيل باستخدام فيسبوك",
+        "question": "ليس لديك حساب؟",
+        "registerButton": "سجل الآن"
+        }
+    },
+    "forgotPassword": {
+        "description": "إعادة تعيين كلمة المرور",
+        "emailLabel": "البريد الالكتروني",
+        "emailPlaceholder": "أدخل بريدك الالكتروني",
+        "sendButton": "إرسال رابط إعادة التعيين",
+        "rememberYourPassword": "هل تذكر كلمة المرور؟",
+        "backToLogin": "العودة إلى تسجيل الدخول",
+        "text": "أدخل بريدك الالكتروني وسنرسل لك رابط لإعادة تعيين كلمة المرور"
+    },
+    "resetPassword": {
+        "description": "إعادة تعيين كلمة المرور",
+        "NewPassword":"كلمة المرور الجديدة",
+        "NewPasswordPlaceholder":"أدخل كلمة المرور الجديدة",
+        "ConfirmPassword":"تأكيد كلمة المرور",
+        "ConfirmPasswordPlaceholder":"تأكيد كلمة المرور الجديدة",
+        "sendButton": "تغيير كلمة المرور",
+        "text": "أدخل كلمة المرور الجديدة وتأكيدها"
+    },
+    "userIndex": {
+        "sidebarNavigation": {
+            "navigation": "الخيارات",
+            "home": "الرئيسية",
+            "adminPanel": "لوحة الإدارة",
+            "addBalance": "إضافة رصيد",
+            "myCart": "سلة التسوق",
+            "purchaseHistory": "تاريخ الشراء",
+            "myOrders": "طلباتي",
+            "wallet": "المحفظة",
+            "ourAgents": "وكلاؤنا",
+            "security": "الامان",
+            "about": "من نحن"
+        },
+        "productNotAvailable": "المنتج غير متاح",
+        "userMenu": {
+            "myProfile": "الملف الشخصي",
+            "myOrders": "طلباتي",
+            "wallet": "محفظتي",
+            "logout": "تسجيل الخروج"
+        },
+        "searchBar": {
+            "text": "بحث"
+        }
+    },
+    "myCart": {
+        "title": "سلة التسوق",
+        "emptyCart": "سلة التسوق فارغة",
+        "continueShopping": "متابعة التسوق",
+        "removeItem": "إزالة",
+        "couponCode": "كوبون",
+        "discountValue": "قيمة الخصم",
+        "total": "المجموع",
+        "summary": "السعر قبل الخصم",
+        "checkout": "تنفيذ الطلب"
+    },
+    "myOrders": {
+        "title": "طلباتي",
+        "no-orders": "لا يوجد طلبات",
+        "order-id": "رقم الطلب",
+        "date": "التاريخ",
+        "total": "المجموع",
+        "status": "الحالة",
+        "view-details": "عرض التفاصيل",
+        "statuses": {
+            "pending": "قيد الانتظار",
+            "completed": "تم الانتهاء",
+            "cancelled": "تم الالغاء"
+        }
+    },
+    "wallet": {
+        "title": "المحفظة",
+        "statics": {
+            "balance": "رصيدك الحالي",
+            "totalPurchases": "إجمالي المشتريات",
+            "receivedBalance": "الرصيد الوارد"
+        },
+        "table": {
+            "id": "رقم",
+            "amount": "المبلغ",
+            "status": "الحالة",
+            "type": "النوع",
+            "date": "التاريخ"
+        },
+        "loading": "جاري التحميل...",
+        "noResults": "لا يوجد نتائج"
+    },
+    "userBank": {
+        "title": "البنك",
+        "amount": "المبلغ",
+        "paymentNotice": "ملاحظة الدفع",
+        "image_placeholder": "لا يوجد ملف",
+        "image_note": "PNG, JPG, JPG حجم الملف لا يتجاوز 5MB",
+        "submit_button": "إرسال طلب",
+        "submit_processing": "جاري المعالجة...",
+        "error": {
+            "load": "فشل في تحميل البنوك. حاول مرة أخرى.",
+            "image_upload": "فشل رفع الصورة. حاول مرة أخرى.",
+            "data_error": "فشل في ارسال البيانات. حاول مرة أخرى.",
+            "bank_not_found": "البنك غير موجود",
+            "bank_not_available": "البنك غير متاح في الوقت الحالي.",
+            "back_to_banks": "العودة إلى البنوك"
+        },
+        "success": "تم ارسال الطلب بنجاح!, يتم التوجيه...",
+        "noResults": "لا يوجد نتائج",
+        "enter": "أدخل"
+    },
+    "adminPanel": {
+        "sidebarNavigation": {
+            "navigation": "خيارات الادارة",
+            "categories": "الاقسام",
+            "products": "المنتجات",
+            "coupons": "إدارة الكوبونات",
+            "orders": "الطلبات",
+            "analytics": "تحليلات",
+            "home": "الرئيسية",
+            "users": "إدارة المستخدمين",
+            "BankManage": "إدارة البنوك",
+            "manualPayment": "إدارة الدفع اليدوي",
+            "ourAgents": "وكلاؤنا",
+            "about": "من نحن"
+        },
+        "userMenu": {
+            "myProfile": "الملف الشخصي",
+            "myOrders": "طلباتي",
+            "wallet": "محفظتي",
+            "logout": "تسجيل الخروج"
+        },
+        "searchBar": {
+            "text": "بحث"
+        }
+    },
+    "notifications": {
+        "title": "الاشعارات",
+        "markRead": "قراءة جميع الاشعارات",
+        "empty": "لا يوجد اشعارات جديدة"
+    },
+    "admin": {
+        "home": {
+            "title": "إدارة الصفحة الرئيسية",
+            "page_title": "إدارة محتوى الصفحة الرئيسية",
+            "page_description": "إدارة مكونات الصفحة الرئيسية",
+            "marquee_management": {
+                "title": "إدارة النص المتحرك",
+                "marquee_description": "إدارة النص المتحرك",
+                "current_marquee": "النص المتحرك الحالي",
+                "current_marquee_placeholder": "النص المتحرك الحالي سيتم ظهوره هنا...",
+                "update_marquee": "تحديث النص المتحرك"
+            },
+            "image_slider_management": {
+                "title": "إدارة عرض الصور",
+                "image_slider_description": "يمكنك من إدارة عرض الصور",
+                "add_new_slide": "إضافة عرض جديد",
+                "slide_title": "عنوان العرض",
+                "slide_description": "وصف العرض",
+                "slide_image_alt": "صورة العرض",
+                "current_slides": "الصور الحالية",
+                "loading_slides": "جاري تحميل صور العرض...",
+                "slide_actions": {
+                    "add": "إضافة عرض جديد",
+                    "edit": "تعديل",
+                    "delete": "حذف",
+                    "save": "حفظ",
+                    "cancel": "إلغاء"
+                }
+            }
+        },
+        "categories": {
+            "title": "إدارة الفئات",
+            "page_title": "إدارة الفئات",
+            "page_description": "تحكم وغير الفئات الخاصة بموقعك",
+            "form": {
+                "title_add": "إضافة فئة جديدة",
+                "title_edit": "تعديل فئة",
+                "name": "اسم الفئة",
+                "name_ar": "اسم الفئة (العربية)",
+                "description": "وصف الفئة(علي الأقل 5 حروف)",
+                "parent": "القسم الأب (اختياري)",
+                "language": "اللغة",
+                "select_parent": "لا يوجد (قسم رئيسي)",
+                "category_image": "صورة الفئة (اختياري)",
+                "language_text": {
+                    "arabic": "العربية",
+                    "english": "الإنجليزية"
+                },
+                "status": {
+                    "label": "الحالة",
+                    "active": "نشط"
+                }
+            },
+            "table": {
+                "title": "الفئات",
+                "refresh": "تحديث",
+                "columns": {
+                    "orderId": "الترتيب",
+                    "name": "اسم الفئة",
+                    "parent": "القسم الأب",
+                    "status": "الحالة",
+                    "actions": "الإجراءات"
+                },
+                "active": "نشط",
+                "inactive": "غير نشط",
+                "loading": "جاري تحميل الفئات..."
+            },
+            "actions": {
+                "add": "إضافة فئة",
+                "edit": "تعديل فئة",
+                "update": "تحديث فئة",
+                "delete": "حذف فئة",
+                "save": "حفظ",
+                "cancel": "إلغاء"
+            },
+            "buttons": {
+                "edit": "تعديل",
+                "delete": "حذف"
+            },
+            "messages": {
+                "confirm_delete": "هل أنت متأكد من حذف هذه الفئة؟ هذه الخطوة لا يمكن التراجع عنها.",
+                "created": "تم إضافة الفئة بنجاح",
+                "updated": "تم تحديث الفئة بنجاح",
+                "deleted": "تم حذف الفئة بنجاح",
+                "error": "حدث خطأ أثناء معالجة طلبك"
+            }
+        },
+        "sidebar": {
+            "home": "الرئيسية",
+            "categories": "الفئات",
+            "orders": "الطلبات",
+            "users": "المستخدمين",
+            "settings": "الإعدادات",
+            "logout": "تسجيل الخروج"
+        },
+        "users": {
+            "title": "إدارة المستخدمين",
+            "page_title": "إدارة المستخدمين",
+            "page_description": "إدارة مستخدمي التطبيق والأدوار والصلاحيات",
+            "table": {
+                "columns": {
+                    "name": "الاسم",
+                    "email": "البريد الإلكتروني",
+                    "phone": "الهاتف",
+                    "role": "الدور",
+                    "balance": "الرصيد",
+                    "status": "الحالة",
+                    "last_login": "عنوان ايبي",
+                    "registered": "تاريخ التسجيل",
+                    "actions": "الإجراءات"
+                }
+            },
+            "filters": {
+                "role": {
+                    "label": "الدور",
+                    "all": "جميع الأدوار",
+                    "user": "مستخدم",
+                    "admin": "مدير"
+                },
+                "status": {
+                    "label": "الحالة",
+                    "all": "جميع الحالات",
+                    "active": "نشط",
+                    "pending": "قيد الانتظار",
+                    "locked": "مقفل"
+                },
+                "search": {
+                    "placeholder": "بحث في المستخدمين..."
+                }
+            },
+            "buttons": {
+                "add_user": "إضافة مستخدم جديد",
+                "edit": "تعديل",
+                "delete": "حذف",
+                "save": "حفظ",
+                "cancel": "إلغاء",
+                "close": "إغلاق"
+            },
+            "form": {
+                "add_title": "إضافة مستخدم جديد",
+                "notification": "الإشعارات",
+                "edit_title": "تعديل المستخدم",
+                "fields": {
+                    "first_name": "الاسم الأول",
+                    "last_name": "الاسم الأخير",
+                    "email": "البريد الإلكتروني",
+                    "phone_number": "رقم الهاتف",
+                    "badge": "الشارة",
+                    "role": "الدور",
+                    "status": "الحالة",
+                    "password": "كلمة المرور",
+                    "confirm_password": "تأكيد كلمة المرور",
+                    "passwordHelp": "اتركه فارغاً للاحتفاظ بكلمة المرور الحالية"
+                },
+                "placeholders": {
+                    "first_name": "أدخل الاسم الأول",
+                    "last_name": "أدخل الاسم الأخير",
+                    "email": "أدخل البريد الإلكتروني",
+                    "phone_number": "أدخل رقم الهاتف",
+                    "password": "أدخل كلمة المرور",
+                    "confirm_password": "تأكيد كلمة المرور"
+                },
+                "status_options": {
+                    "active": "نشط",
+                    "pending": "قيد الانتظار",
+                    "locked": "مقفل"
+                },
+                "role_options": {
+                    "user": "مستخدم",
+                    "admin": "مدير"
+                },
+                "validation": {
+                    "required": "هذا الحقل مطلوب",
+                    "email": "الرجاء إدخال بريد إلكتروني صحيح",
+                    "password_length": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+                    "password_match": "كلمتا المرور غير متطابقتين"
+                }
+            },
+            "notificationForm": {
+                "header": "إرسال إشعار جديد",
+                "send": "إرسال إشعار",
+                "fields": {
+                    "title": "عنوان الإشعار",
+                    "userEmail": "بريد المستخدم",
+                    "type": "نوع الإشعار",
+                    "message": "رسالة الإشعار"
+                },
+                "placeholders": {
+                    "title": "أدخل عنوان الإشعار",
+                    "message": "أدخل محتوى الرسالة",
+                    "userEmail": "أدخل بريد المستخدم"
+                },
+                "validation": {
+                    "required": "هذا الحقل مطلوب"
+                },
+                "options": {
+                    "oneUser": "مستخدم واحد",
+                    "everyone": "جميع المستخدمين"
+                }
+            },
+            "pagination": {
+                "previous": "السابق",
+                "next": "التالي",
+                "showing": "عرض",
+                "to": "إلى",
+                "of": "من",
+                "users": "مستخدمين"
+            },
+            "messages": {
+                "user_created": "تم إنشاء المستخدم بنجاح",
+                "user_updated": "تم تحديث المستخدم بنجاح",
+                "user_deleted": "تم حذف المستخدم بنجاح",
+                "delete_confirm": "هل أنت متأكد من رغبتك في حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.",
+                "no_users": "لا توجد مستخدمين",
+                "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+                "loading": "جاري التحميل..."
+            }
+        },
+        "products": {
+            "title": "إدارة المنتجات",
+            "page_title": "إدارة المنتجات",
+            "page_description": "إدارة المنتجات، الفئات، ونماذج المنتج",
+            "search_placeholder": "بحث في المنتجات...",
+            "add_product": "إضافة منتج جديد",
+            "confirm_delete": "هل أنت متأكد من رغبتك في حذف هذا المنتج؟",
+            "messages": {
+                "created": "تم إنشاء المنتج بنجاح",
+                "updated": "تم تحديث المنتج بنجاح",
+                "deleted": "تم حذف المنتج بنجاح",
+                "error": "حدث خطأ. يرجى المحاولة مرة أخرى."
+            },
+            "table": {
+                "orderId": "الترتيب",
+                "name": "الاسم",
+                "price": "السعر (USD)",
+                "price_jod": "السعر (JOD)",
+                "is_available": "متاح",
+                "form": "يحتوي على نموذج",
+                "actions": "إجراءات"
+            },
+            "form": {
+                "title": "إضافة منتج جديد",
+                "edit_title": "تعديل المنتج",
+                "category": "الفئة",
+                "name": "الاسم",
+                "price": "السعر (USD)",
+                "price_jod": "السعر (JOD)",
+                "minUnits": "الحد الأدنى من الوحدات",
+                "is_available": "متاح",
+                "is_available_label": "منتج متاح",
+                "image": "صورة المنتج",
+                "upload_file": "ارفع ملفًا",
+                "drag_drop": "أو اسحب و افلت",
+                "image_formats": "PNG, JPG, JPEG",
+                "dialog_has_form": "يحتوي على نموذج",
+                "dialog_has_form_label": "منتج يحتوي على نموذج",
+                "dialog_form_name": "اسم نموذج",
+                "dialog_form_field": "اسم حقل نموذج",
+                "dialog_forms": {
+                    "main_label": "حقول إضافية (اختياري)",
+                    "add_field": "إضافة حقل",
+                    "delete_field": "حذف آخر حقل"
+                },
+                "dialog_description": "وصف نموذج",
+                "dialog_description_placeholder": "أدخل وصف نموذج...",
+                "validation": {
+                    "required": "هذا الحقل مطلوب",
+                    "price": "الرجاء إدخال سعر صحيح",
+                    "image": "الرجاء رفع صورة",
+                    "dialog_form_name": "اسم نموذج مطلوب عند تفعيل نموذج",
+                    "dialog_form_field": "اسم حقل نموذج مطلوب عند تفعيل نموذج"
+                },
+                "messages": {
+                    "success": "تم حفظ المنتج بنجاح",
+                    "error": "حدث خطأ. يرجى المحاولة مرة أخرى."
+                }
+            }
+        },
+        "couponManage": {
+            "title": "إدارة الكوبونات",
+            "stepper" : {
+                "one": {
+                    "details": "تفاصيل الكوبون",
+                    "assignProducts": "إضافة أو عرض الكوبونات",
+                    "addCoupon": "إضافة كوبون جديد",
+                    "couponCode": "كود الكوبون",
+                    "couponCodePlaceholder": "مثال: NEWYEAR30",
+                    "discountValue": "قيمة الخصم",
+                    "discountValuePlaceholder": "مثال: 30%",
+                    "expirationDate": "تاريخ الانتهاء",
+                    "usageLimit": "عدد الاستخدامات",
+                    "usageLimitPlaceholder": "مثال: 10",
+                    "couponTable": {
+                        "activeCoupons": "الكوبونات النشطة",
+                        "couponCode": "كود الكوبون",
+                        "discount": "قيمة الخصم",
+                        "expirationDate": "تاريخ الانتهاء",
+                        "actions": "إجراءات",
+                        "loading": "جاري التحميل..."
+                    }
+                },
+                "two": {
+                    "details": "إضافة أو عرض المنتجات",
+                    "link": "ربط المنتجات",
+                    "assignProducts": "إضافة المنتجات للكوبون",
+                    "searchPlaceholder": "بحث المنتجات...",
+                    "buttons": {
+                        "delete": "حذف"
+                    },
+                    "table": {
+                        "productName": "اسم المنتج",
+                        "category": "الفئة",
+                        "price": "السعر"
+                    }
+                },
+                "stepButtons": {
+                    "next": "التالي: إضافة المنتجات",
+                    "back": "العودة",
+                    "save": "حفظ الكوبون"
+                }
+            }
+        },
+        "bankManage": {
+            "title": "إدارة البنوك",
+            "subtitle": "إدارة الحسابات البنكية وتفاصيلها",
+            "page_title": "إدارة البنوك",
+            "page_description": "إدارة الحسابات البنكية وتفاصيلها",
+            "modal": {
+                "delete": {
+                    "title": "حذف بنك",
+                    "message": "هل أنت متأكد من حذف هذا البنك؟ لا يمكن التراجع عن هذا الإجراء.",
+                    "confirm": "حذف"
+                }
+            },
+            "table": {
+                "title": "إدارة البنوك",
+                "search_placeholder": "بحث في البنوك...",
+                "no_data": "لا توجد بنوك",
+                "pagination": {
+                    "showing_of": "عرض",
+                    "banks": "بنوك",
+                    "previous": "السابق",
+                    "next": "التالي"
+                },
+                "columns": {
+                    "logo": "الشعار",
+                    "name": "اسم البنك",
+                    "status": "الحالة",
+                    "created": "تاريخ الإنشاء",
+                    "actions": "الإجراءات"
+                },
+                "status": {
+                    "active": "نشط",
+                    "inactive": "غير نشط"
+                },
+                "actions": {
+                    "edit": "تعديل",
+                    "delete": "حذف"
+                }
+            },
+            "form": {
+                "title_add": "إضافة بنك جديد",
+                "edit_title": "تعديل البنك",
+                "fields": {
+                    "name": "اسم البنك",
+                    "logo": "شعار البنك",
+                    "isActive": "نشط",
+                    "upload_hint": "رفع الشعار (JPEG/PNG، الحد الأقصى 2 ميجابايت)"
+                },
+                "buttons": {
+                    "save": "حفظ",
+                    "cancel": "إلغاء",
+                    "upload": "رفع",
+                    "submit": "إرسال"
+                },
+                "name": {
+                    "label": "اسم البنك",
+                    "placeholder": "أدخل اسم البنك"
+                },
+                "logo": {
+                    "label": "شعار البنك",
+                    "placeholder": "أدخل شعار البنك",
+                    "upload_button": "رفع",
+                    "help_text": "رفع الشعار (JPEG/PNG، الحد الأقصى 2 ميجابايت)"
+                },
+                "description": {
+                    "label": "وصف",
+                    "placeholder": "أدخل وصف",
+                    "help_text": "أدخل وصف"
+                },
+                "has_form_field": {
+                    "label": "يحتوي على نموذج"
+                },
+                "form_field_label": {
+                    "label": "اسم حقل النموذج",
+                    "help_text": "أدخل اسم حقل النموذج",
+                    "placeholder": "أدخل اسم حقل النموذج"
+                },
+                "status": {
+                    "label": "الحالة",
+                    "active": "نشط",
+                    "inactive": "غير نشط"
+                }
+            },
+            "search_placeholder": "بحث البنوك...",
+            "add_bank": "إضافة بنك",
+            "delete_confirm": "هل أنت متأكد من حذف هذا البنك؟",
+            "success": {
+                "created": "تم إنشاء البنك بنجاح!",
+                "updated": "تم تحديث البنك بنجاح!",
+                "deleted": "تم حذف البنك بنجاح!"
+            },
+            "error": {
+                "load": "فشل تحميل البنوك. يرجى المحاولة مرة أخرى.",
+                "save": "فشل حفظ البنك. يرجى المحاولة مرة أخرى.",
+                "delete": "فشل حذف البنك. يرجى المحاولة مرة أخرى.",
+                "validation": {
+                    "name_required": "اسم البنك مطلوب",
+                    "invalid_logo": "الرجاء رفع صورة صالحة (JPEG/PNG)",
+                    "logo_size": "يجب أن يكون حجم الصورة أقل من 2 ميجابايت"
+                }
+            }
+        }
+    },
+    "common": {
+        "loading": "جاري التحميل...",
+        "save": "حفظ",
+        "cancel": "إلغاء",
+        "delete": "حذف",
+        "edit": "تعديل",
+        "close": "إغلاق",
+        "success": "نجاح",
+        "error": "خطأ",
+        "warning": "تحذير",
+        "info": "معلومات",
+        "confirm": "تأكيد",
+        "yes": "نعم",
+        "no": "لا",
+        "ok": "موافق"
+    },
+    "footer": {
+        "siteName": "ميسو كارد",
+        "rightReserved": "جميع الحقوق محفوظة",
+        "aboutDev": "عن المطور"
+    }
+}

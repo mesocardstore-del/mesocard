@@ -1,0 +1,51 @@
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 400; /* Regular */
+  src: url('/static/fonts/Tajawal-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  font-style: normal;
+  font-weight: 700; /* Regular */
+  src: url('/static/fonts/Tajawal-Bold.ttf') format('truetype');
+}
+
+body {
+  font-family: 'Tajawal', sans-serif;
+}
+
+.card {
+    width: 800px;
+    height: 310px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 0.5px;
+  }
+  
+  .slideshow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .slideshow img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    opacity: 0;
+    transition: opacity 1.4s;
+  }
+  
+  .slideshow img.active {
+    opacity: 1;
+  }
+  
+  .slider-loading {
+    min-height: 200px;
+  }

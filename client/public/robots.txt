@@ -1,0 +1,19 @@
+User-agent: Googlebot
+Allow: /
+Disallow: /static/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /static/
+
+User-agent: Twitterbot
+Allow: /
+Disallow: /static/
+
+User-agent: facebookexternalhit
+Allow: /
+Disallow: /static/
+
+User-agent: *
+Allow: /
+Disallow: /static/

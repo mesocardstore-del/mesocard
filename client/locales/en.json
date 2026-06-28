@@ -1,0 +1,683 @@
+{
+    "visitors-index" : {
+        "registeration-prompt-box": {
+            "title": "Welcome to Meso Card",
+            "description": "Create an account or log in to access all features of the app",
+            "register-button": "Register",
+            "login-button": "Login"
+        },
+        "sidebar-navigation": {
+            "navigation": "Navigation",
+            "home": "Home",
+            "about": "About Us"
+        },
+        "search-bar": {
+            "text": "Search"
+        },
+        "search": {
+            "no-results": "No results found"
+        },
+        "popup_messages": {
+            "login_warn": "You need to login first"
+        }
+    },
+    "registeration": {
+        "form": {
+            "description": "Create an account or log in to access all features of the app",
+            "firstname": {
+                "label": "First Name",
+                "placeholder": "Enter your first name",
+                "patternMessage": "First name must be 2–30 characters and may include letters, apostrophes, spaces, and hyphens."
+            },
+            "lastname": {
+                "label": "Last Name",
+                "placeholder": "Enter your last name",
+                "patternMessage": "Last name must be 2–30 characters and may include letters, apostrophes, spaces, and hyphens."
+            },
+            "country": {
+                "label": "Country",
+                "placeholder": "Select your country"
+            },
+            "phone": {
+                "label": "Phone Number",
+                "placeholder": "Enter your phone number",
+                "patternMessage": "Please enter a valid phone number."
+            },
+            "email": {
+                "label": "Email",
+                "placeholder": "Enter your email",
+                "patternMessage": "Please enter a valid email address."
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Enter your password",
+                "patternMessage": "Please enter a valid password."
+            },
+            "confirmPassword": {
+                "label": "Confirm Password",
+                "placeholder": "Confirm your password",
+                "patternMessage": "Please enter a valid password."
+            },
+            "googleSigninButton": "Sign up with Google",
+            "facebookSigninButton": "Sign up with Facebook",
+            "registerButton": "Sign up",
+            "question": "Already have an account?",
+            "loginButton": "Login here"
+        }
+    },
+    "completeRegisteration": {
+        "form": {
+            "description": "Complete your registration by adding your phone number",
+            "country": {
+                "label": "Country",
+                "placeholder": "Select your country"
+            },
+            "phone": {
+                "label": "Phone Number",
+                "placeholder": "Enter your phone number",
+                "patternMessage": "Please enter a valid phone number."
+            },
+            "completeButton" : "Complete Registration",
+            "selectCountry": "Select your country",
+            "enterPhoneNumber": "Enter your phone number",
+            "redirectMessage" : "Registration completed successfully, redirecting...",
+            "errorOccured": "An error occurred",
+            "networkError": "Network error. Please try again."
+        }
+    },
+    "login": {
+        "form": {
+            "description": "Login to your account",
+            "email": {
+                "label": "Email",
+                "placeholder": "Enter your email",
+                "patternMessage": "Please enter a valid email address."
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Enter your password",
+                "patternMessage": "Please enter a valid password."
+            },
+            "forgotPasswordButton": "Forgot Password?",
+            "loginButton": "Login",
+            "googleSigninButton": "Sign in with Google",
+            "facebookSigninButton": "Sign in with Facebook",
+            "question": "Don't have an account?",
+            "registerButton": "Register"
+        }
+    },
+    "forgotPassword": {
+        "description": "Reset Your Password",
+        "emailLabel": "Email Address",
+        "emailPlaceholder": "Enter your registered email",
+        "sendButton": "Send Reset Link",
+        "rememberYourPassword": "Remember your password?",
+        "backToLogin": "Back to Login",
+        "text": "Enter your email and we'll send you a link to reset your password"
+    },
+    "resetPassword": {
+        "description": "Reset Your Password",
+        "NewPassword":"New Password",
+        "NewPasswordPlaceholder":"Enter your new password",
+        "ConfirmPassword":"Confirm Password",
+        "ConfirmPasswordPlaceholder":"Confirm your new password",
+        "sendButton": "Change Password",
+        "text": "Enter your new password and confirm it"
+    },
+    "userIndex": {
+        "sidebarNavigation": {
+            "navigation": "Navigation",
+            "home": "Home",
+            "adminPanel": "Admin Panel",
+            "addBalance": "Add Balance",
+            "myCart": "My Cart",
+            "purchaseHistory": "Purchase History",
+            "myOrders": "My Orders",
+            "wallet": "Wallet",
+            "ourAgents": "Our Agents",
+            "security": "Security",
+            "about": "About Us"
+        },
+        "userMenu": {
+            "myProfile": "My Profile",
+            "myOrders": "My Orders",
+            "wallet": "Wallet",
+            "logout": "Logout"
+        },
+        "productNotAvailable": "Product is not available",
+        "searchBar": {
+            "text": "Search"
+        }
+    },
+    "myCart": {
+        "title": "My Cart",
+        "emptyCart": "Your cart is empty",
+        "continueShopping": "Continue Shopping",
+        "removeItem": "Remove",
+        "couponCode": "Coupon Code",
+        "discountValue": "Discount Value",
+        "total": "Total",
+        "summary": "Price Before Discount",
+        "checkout": "Order"
+    },
+    "myOrders": {
+        "title": "My Orders",
+        "no-orders": "No orders found",
+        "order-id": "Order ID",
+        "date": "Date",
+        "total": "Total",
+        "status": "Status",
+        "view-details": "View Details",
+        "statuses": {
+            "pending": "Pending",
+            "completed": "Completed",
+            "cancelled": "Cancelled"
+        }
+    },
+    "wallet": {
+        "title": "Wallet",
+        "statics": {
+            "balance": "Your Balance",
+            "totalPurchases": "Total Purchases",
+            "receivedBalance": "Received Balance"
+        },
+        "table": {
+            "id": "ID",
+            "amount": "Amount",
+            "status": "Status",
+            "type": "Type",
+            "date": "Date"
+        },
+        "loading": "Loading...",
+        "noResults": "No results found"
+    },
+    "userBank": {
+        "title": "User Bank",
+        "amount": "Amount",
+        "paymentNotice": "Payment Notice",
+        "image_placeholder": "No file chosen",
+        "image_note": "PNG, JPG, JPG up to 5MB",
+        "submit_button": "Submit Request",
+        "submit_processing": "Processing...",
+        "error": {
+            "load": "Failed to load banks. Please try again.",
+            "image_upload": "Failed to upload image. Please try again.",
+            "data_error": "Failed to submit data. Please try again.",
+            "bank_not_found": "Bank Not Found",
+            "bank_not_available": "The requested bank account is not available at the moment.",
+            "back_to_banks": "Back to Banks",
+            "validation": {
+                "invalid_logo": "Please upload a valid image (JPEG/PNG)",
+                "logo_size": "Image size should be less than 2MB"
+            }
+        },
+        "success": "Request submitted successfully!, redirecting...",
+        "noResults": "No banks found",
+        "enter": "Enter"
+    },
+    "adminPanel": {
+        "sidebarNavigation": {
+            "navigation": "Admin Navigation",
+            "categories": "Categories",
+            "products": "Products",
+            "coupons": "Coupons Management",
+            "orders": "Orders",
+            "analytics": "Analytics",
+            "home": "Home Page",
+            "users": "User Management",
+            "BankManage": "Bank Management",
+            "manualPayment": "Manual Payment",
+            "ourAgents": "Our Agents",
+            "about": "About Us"
+        },
+        "userMenu": {
+            "myProfile": "My Profile",
+            "logout": "Logout"
+        },
+        "searchBar": {
+            "text": "Search"
+        }
+    },
+    "notifications": {
+        "title": "Notifications",
+        "markRead": "Mark all as read",
+        "empty": "No new notifications"
+    },
+    "footer": {
+        "siteName": "Meso Card",
+        "rightReserved": "All rights reserved",
+        "aboutDev": "About Developer"
+    },
+    "admin": {
+        "home": {
+            "title": "Home Page Management",
+            "page_title": "Home Page Content Management",
+            "page_description": "Manage and customize your website's home page components",
+            "marquee_management": {
+                "title": "Marquee Text Management",
+                "marquee_description": "Manage and customize your website's marquee text",
+                "current_marquee": "Current Marquee Text",
+                "current_marquee_placeholder": "Current marquee text will appear here...",
+                "update_marquee": "Update Marquee Text"
+            },
+            "image_slider_management": {
+                "title": "Image Slider Management",
+                "image_slider_description": "Manage and customize your website's image slider",
+                "add_new_slide": "Add New Slide",
+                "slide_title": "Slide Title",
+                "slide_description": "Slide Description",
+                "slide_image_alt": "Slide Image",
+                "current_slides": "Current Slides",
+                "loading_slides": "Loading slides...",
+                "slide_actions": {
+                    "add": "Add Slide",
+                    "edit": "Edit",
+                    "delete": "Delete",
+                    "save": "Save",
+                    "cancel": "Cancel"
+                }
+            }
+        },
+        "categories": {
+            "title": "Category Management",
+            "page_title": "Category Management",
+            "page_description": "Manage and customize your website's categories",
+            "form": {
+                "title_add": "Add New Category",
+                "title_edit": "Edit Category",
+                "name": "Category Name",
+                "name_ar": "Category Name (Arabic)",
+                "description": "Description(at least 5 characters)",
+                "parent": "Parent Category (optional)",
+                "language": "Language",
+                "select_parent": "None (Top Level Category)",
+                "category_image": "Category Image (optional)",
+                "language_text": {
+                    "arabic": "Arabic",
+                    "english": "English"
+                },
+                "status": {
+                    "label": "Status",
+                    "active": "Active"
+                }
+            },
+            "table": {
+                "title": "Categories",
+                "refresh": "Refresh",
+                "columns": {
+                    "orderId": "Order",
+                    "name": "Name",
+                    "parent": "Parent",
+                    "status": "Status",
+                    "actions": "Actions"
+                },
+                "active": "Active",
+                "inactive": "Inactive",
+                "loading": "Loading categories..."
+            },
+            "actions": {
+                "add": "Add Category",
+                "edit": "Edit Category",
+                "update": "Update Category",
+                "delete": "Delete Category",
+                "save": "Save",
+                "cancel": "Cancel"
+            },
+            "buttons": {
+                "edit": "Edit",
+                "delete": "Delete"
+            },
+            "messages": {
+                "confirm_delete": "Are you sure you want to delete this category? This action cannot be undone.",
+                "created": "Category created successfully",
+                "updated": "Category updated successfully",
+                "deleted": "Category deleted successfully",
+                "error": "An error occurred while processing your request"
+            }
+        },
+        "users": {
+            "title": "User Management",
+            "page_title": "User Management",
+            "page_description": "Manage application users, roles, and permissions",
+            "table": {
+                "columns": {
+                    "name": "Name",
+                    "email": "Email",
+                    "phone": "Phone",
+                    "role": "Role",
+                    "balance": "Balance",
+                    "status": "Status",
+                    "last_login": "Last Login",
+                    "registered": "Registered",
+                    "actions": "Actions"
+                }
+            },
+            "filters": {
+                "role": {
+                    "label": "Role",
+                    "all": "All Roles",
+                    "user": "User",
+                    "admin": "Administrator"
+                },
+                "status": {
+                    "label": "Status",
+                    "all": "All Statuses",
+                    "active": "Active",
+                    "pending": "Pending",
+                    "locked": "Locked"
+                },
+                "search": {
+                    "placeholder": "Search users..."
+                }
+            },
+            "buttons": {
+                "add_user": "Add New User",
+                "edit": "Edit",
+                "delete": "Delete",
+                "save": "Save",
+                "cancel": "Cancel",
+                "close": "Close"
+            },
+            "form": {
+                "add_title": "Add New User",
+                "notification": "Notifications",
+                "edit_title": "Edit User",
+                "fields": {
+                    "first_name": "First Name",
+                    "last_name": "Last Name",
+                    "email": "Email Address",
+                    "phone_number": "Phone Number",
+                    "badge": "Badge",
+                    "role": "Role",
+                    "status": "Status",
+                    "password": "Password",
+                    "confirm_password": "Confirm Password",
+                    "passwordHelp": "Leave blank to keep current password"
+                },
+                "placeholders": {
+                    "first_name": "Enter first name",
+                    "last_name": "Enter last name",
+                    "email": "Enter email address",
+                    "phone_number": "Enter phone number",
+                    "password": "Enter password",
+                    "confirm_password": "Confirm password"
+                },
+                "status_options": {
+                    "active": "Active",
+                    "pending": "Pending",
+                    "locked": "Locked"
+                },
+                "role_options": {
+                    "user": "User",
+                    "admin": "Administrator"
+                },
+                "validation": {
+                    "required": "This field is required",
+                    "email": "Please enter a valid email address",
+                    "password_length": "Password must be at least 8 characters",
+                    "password_match": "Passwords do not match"
+                }
+            },
+            "notificationForm": {
+                "header": "Send New Notification",
+                "send": "Send Notification",
+                "fields": {
+                    "title": "Title",
+                    "userEmail": "User Email",
+                    "type": "Type",
+                    "message": "Message"
+                },
+                "placeholders": {
+                    "title": "Enter notification title",
+                    "message": "Enter notification message",
+                    "userEmail": "Enter user email"
+                },
+                "validation": {
+                    "required": "This field is required"
+                },
+                "options": {
+                    "oneUser": "One User",
+                    "everyone": "Everyone"
+                }
+            },
+            "pagination": {
+                "previous": "Previous",
+                "next": "Next",
+                "showing": "Showing",
+                "to": "to",
+                "of": "of",
+                "users": "users"
+            },
+            "messages": {
+                "user_created": "User created successfully",
+                "user_updated": "User updated successfully",
+                "user_deleted": "User deleted successfully",
+                "delete_confirm": "Are you sure you want to delete this user? This action cannot be undone.",
+                "no_users": "No users found",
+                "error": "An error occurred. Please try again.",
+                "loading": "Loading..."
+            }
+        },
+        "products": {
+            "title": "Product Management",
+            "page_title": "Product Management",
+            "page_description": "Manage products, categories, and product forms",
+            "search_placeholder": "Search products...",
+            "add_product": "Add New Product",
+            "confirm_delete": "Are you sure you want to delete this product?",
+            "messages": {
+                "created": "Product created successfully",
+                "updated": "Product updated successfully",
+                "deleted": "Product deleted successfully",
+                "error": "An error occurred while processing your request"
+            },
+            "table": {
+                "orderId": "Order",
+                "name": "Name",
+                "price": "Price (USD)",
+                "price_jod": "Price (JOD)",
+                "is_available": "Available",
+                "form": "Has Form",
+                "actions": "Actions"
+            },
+            "form": {
+                "title": "Add Product",
+                "edit_title": "Edit Product",
+                "category": "Category",
+                "name": "Name",
+                "price": "Price (USD)",
+                "price_jod": "Price (JOD)",
+                "minUnits": "Minimum Units",
+                "is_available": "Is Available",
+                "is_available_label": "Product is available",
+                "image": "Product Image",
+                "upload_file": "Upload File",
+                "drag_drop": "or drag and drop",
+                "image_formats": "PNG, JPG, JPEG",
+                "dialog_has_form": "Has Dialog Form",
+                "dialog_has_form_label": "Product has dialog form",
+                "dialog_form_name": "Dialog Form Name",
+                "dialog_form_field": "Dialog Form Field",
+                "dialog_forms": {
+                    "main_label": "Additional Fields (Optional)",
+                    "add_field": "Add Field",
+                    "delete_field": "Delete Last Field"
+                },
+                "dialog_description": "Dialog Description",
+                "dialog_description_placeholder": "Enter dialog description...",
+                "validation": {
+                    "required": "This field is required",
+                    "price": "Please enter a valid price",
+                    "image": "Please upload a valid image",
+                    "dialog_form_name": "Dialog form name is required when dialog form is enabled",
+                    "dialog_form_field": "Dialog form field is required when dialog form is enabled"
+                },
+                "messages": {
+                    "success": "Product saved successfully",
+                    "error": "An error occurred while saving the product"
+                }
+            }
+        },
+        "couponManage": {
+            "title": "Coupon Management",
+            "stepper" : {
+                "one": {
+                    "details": "Coupon Details",
+                    "assignProducts": "Add or View Coupons",
+                    "addCoupon": "Add New Coupon",
+                    "couponCode": "Coupon Code",
+                    "couponCodePlaceholder": "e.g. NEWYEAR30",
+                    "discountValue": "Discount Value",
+                    "discountValuePlaceholder": "e.g. 30%",
+                    "expirationDate": "Expiration Date",
+                    "usageLimit": "Usage Limit",
+                    "usageLimitPlaceholder": "e.g. 10",
+                    "couponTable": {
+                        "activeCoupons": "Active Coupons",
+                        "couponCode": "Coupon Code",
+                        "discount": "Discount",
+                        "expirationDate": "Expiration Date",
+                        "actions": "Actions",
+                        "loading": "Loading..."
+                    }
+                },
+                "two": {
+                    "details": "Assign Products",
+                    "link": "Link to Products",
+                    "assignProducts": "Assign Products for Coupon",
+                    "searchPlaceholder": "Search products...",
+                    "buttons": {
+                        "delete": "Delete"
+                    },
+                    "table": {
+                        "productName": "Product Name",
+                        "category": "Category",
+                        "price": "Price"
+                    }
+                },
+                "stepButtons": {
+                    "next": "Next: Assign Products",
+                    "back": "Back",
+                    "save": "Save Coupon"
+                }
+            }
+        },
+        "bankManage": {
+            "title": "Bank Management",
+            "subtitle": "Bank Management",
+            "page_title": "Bank Management",
+            "page_description": "Manage bank accounts and their details",
+            "modal": {
+                "delete": {
+                    "title": "Delete Bank",
+                    "message": "Are you sure you want to delete this bank? This action cannot be undone.",
+                    "confirm": "Delete"
+                }
+            },
+            "table": {
+                "title": "Bank Management",
+                "search_placeholder": "Search banks...",
+                "no_data": "No banks found",
+                "pagination": {
+                    "showing_of": "Showing",
+                    "banks": "banks",
+                    "previous": "Previous",
+                    "next": "Next"
+                },
+                "columns": {
+                    "logo": "Logo",
+                    "name": "Bank Name",
+                    "status": "Status",
+                    "created": "Created",
+                    "actions": "Actions"
+                },
+                "status": {
+                    "active": "Active",
+                    "inactive": "Inactive"
+                },
+                "actions": {
+                    "edit": "Edit",
+                    "delete": "Delete"
+                }
+            },
+            "form": {
+                "title_add": "Add New Bank",
+                "edit_title": "Edit Bank",
+                "fields": {
+                    "name": "Bank Name",
+                    "logo": "Bank Logo",
+                    "isActive": "Is Active",
+                    "upload_hint": "Upload logo (JPEG/PNG, max 2MB)"
+                },
+                "buttons": {
+                    "save": "Save",
+                    "cancel": "Cancel",
+                    "upload": "Upload",
+                    "submit": "Submit"
+                },
+                "name": {
+                    "label": "Bank Name",
+                    "placeholder": "Enter bank name"
+                },
+                "logo": {
+                    "label": "Bank Logo",
+                    "placeholder": "Upload bank logo",
+                    "upload_button": "Upload",
+                    "help_text": "Upload logo (JPEG/PNG, max 2MB)"
+                },
+                "description": {
+                    "label": "Description",
+                    "placeholder": "Enter description",
+                    "help_text": "Enter description"
+                },
+                "has_form_field": {
+                    "label": "Has Form Field"
+                },
+                "form_field_label": {
+                    "label": "Form Field Label",
+                    "help_text": "Enter form field label",
+                    "placeholder": "Enter form field label"
+                },
+                "status": {
+                    "label": "Status",
+                    "active": "Active",
+                    "inactive": "Inactive"
+                }
+            },
+            "search_placeholder": "Search banks...",
+            "add_bank": "Add Bank",
+            "delete_confirm": "Are you sure you want to delete this bank?",
+            "success": {
+                "created": "Bank created successfully!",
+                "updated": "Bank updated successfully!",
+                "deleted": "Bank deleted successfully!"
+            },
+            "error": {
+                "load": "Failed to load banks. Please try again.",
+                "save": "Failed to save bank. Please try again.",
+                "delete": "Failed to delete bank. Please try again.",
+                "validation": {
+                    "name_required": "Bank name is required",
+                    "invalid_logo": "Please upload a valid image (JPEG/PNG)",
+                    "logo_size": "Image size should be less than 2MB"
+                }
+            }
+        }
+    },
+    "common": {
+        "loading": "Loading...",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "close": "Close",
+        "success": "Success",
+        "error": "Error",
+        "warning": "Warning",
+        "info": "Information",
+        "confirm": "Confirm",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "OK"
+    }
+}

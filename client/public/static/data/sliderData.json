@@ -1,0 +1,23 @@
+[
+  {
+    "id": "3d738f59-d953-49af-83e6-55d774fa72d3",
+    "imageUrl": "/static/images/slider/1749051626970-413241972.png",
+    "title": "Apps payments",
+    "description": "Slider 3",
+    "altText": "Slider 3"
+  },
+  {
+    "id": "6f7dff1f-2786-411e-87d0-b66d2974b4fb",
+    "imageUrl": "/static/images/slider/1749051691034-390681439.png",
+    "title": "Default Slider2",
+    "description": "Default_Slider2",
+    "altText": "Slider2"
+  },
+  {
+    "id": "6afb2c8d-cb93-4b93-9f52-a34e2c48ab5c",
+    "imageUrl": "/static/images/slider/1749094392864-229660364.png",
+    "title": "test",
+    "description": "test",
+    "altText": "test"
+  }
+]
