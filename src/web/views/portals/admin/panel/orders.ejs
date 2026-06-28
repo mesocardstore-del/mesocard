@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= language === 'ar' ? 'إدارة الطلبات' : 'Manage Orders' %> - Meso Card</title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="/static/styles/animate.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#3B82F6',
+                            '50': '#EBF2FF',
+                            '100': '#D6E4FF',
+                            '200': '#ADCAFD',
+                            '300': '#85B0FC',
+                            '400': '#5C96FB',
+                            '500': '#3B82F6',
+                            '600': '#0B61EF',
+                            '700': '#084BBD',
+                            '800': '#06368A',
+                            '900': '#042158'
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navbar -->
+        <%- include('../../../partials/admin/adminPanelNav') %>
+        
+        <!-- Sidebar and Main Content -->
+        <div class="flex flex-column pt-12">
+            <!-- Sidebar -->
+            <%- include('../../../partials/admin/adminPanelSidebar') %>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-6 md:<%= language === 'ar' ? 'mr-64' : 'ml-64' %>">
+            <div class="max-w-7xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                        <%= language === 'ar' ? 'إدارة الطلبات' : 'Manage Orders' %>
+                    </h1>
+                    
+                    <!-- Loading Indicator -->
+                    <div id="loading-indicator" class="flex justify-center items-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+                    </div>
+
+                    <!-- No Orders Message -->
+                    <div id="no-orders-message" class="hidden text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-white">
+                            <%= language === 'ar' ? 'لا توجد طلبات' : 'No orders found' %>
+                        </h3>
+                    </div>
+
+                    <!-- Orders Table -->
+                    <div id="orders-container">
+                        <div id="orders-table" class="hidden overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-gray-700">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            <%= language === 'ar' ? 'رقم الطلب' : 'Order ID' %>
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            <%= language === 'ar' ? 'البريد الإلكتروني' : 'Email' %>
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            <%= language === 'ar' ? 'المجموع' : 'Total' %>
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            <%= language === 'ar' ? 'الحالة' : 'Status' %>
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            <%= language === 'ar' ? 'تاريخ الطلب' : 'Order Date' %>
+                                        </th>
+                                        <th scope="col" class="relative px-6 py-3">
+                                            <span class="sr-only"><%= language === 'ar' ? 'الإجراءات' : 'Actions' %></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-table-body" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    <!-- Orders will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="order-details-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+            <!-- Modal panel -->
+            <div class="inline-block  animate__animated animate__fadeIn align-bottom bg-white dark:bg-gray-800 rounded-lg <%= language === 'ar' ? 'text-right' : 'text-left' %> overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:<%= language === 'ar' ? 'text-right' : 'text-left' %> w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4" id="modal-title">
+                                <%= language === 'ar' ? 'تفاصيل الطلب' : 'Order Details' %> #<span id="order-id"></span>
+                            </h3>
+                            
+                            <div id="order-details-content" class="space-y-4">
+                                <!-- Order details will be loaded here -->
+                            </div>
+
+                            <!-- Status Update Section -->
+                            <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
+                                <h4 class="text-md font-medium text-gray-900 dark:text-white mb-3">
+                                    <%= language === 'ar' ? 'تحديث حالة الطلب' : 'Update Order Status' %>
+                                </h4>
+                                
+                                <form id="update-status-form" class="space-y-4">
+                                    <div>
+                                        <label for="status-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                            <%= language === 'ar' ? 'الحالة الجديدة' : 'New Status' %>
+                                        </label>
+                                        <select id="status-select" class="w-full p-3 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                            <option value="pending"><%= language === 'ar' ? 'قيد الانتظار' : 'Pending' %></option>
+                                            <option value="completed"><%= language === 'ar' ? 'مكتمل' : 'Completed' %></option>
+                                            <option value="cancelled"><%= language === 'ar' ? 'ملغي' : 'Cancelled' %></option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="status-message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                            <%= language === 'ar' ? 'رسالة للمستخدم (مطلوبة)' : 'Message to User (Required)' %>
+                                        </label>
+                                        <textarea id="status-message" rows="3" class="w-full p-3 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required></textarea>
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                            <%= language === 'ar' ? 'سيتم إرسال هذه الرسالة كإشعار للمستخدم.' : 'This message will be sent as a notification to the user.' %>
+                                        </p>
+                                    </div>
+
+                                    <div class="flex justify-end space-x-3 <%= language === 'ar' ? 'space-x-reverse' : '' %>">
+                                        <button type="button" id="cancel-update" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                            <%= language === 'ar' ? 'إلغاء' : 'Cancel' %>
+                                        </button>
+                                        <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                            <%= language === 'ar' ? 'تحديث الحالة' : 'Update Status' %>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="/static/js/sweetalert2.js"></script>
+<script src="/static/js/custom.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const noOrdersMessage = document.getElementById('no-orders-message');
+            const ordersTable = document.getElementById('orders-table');
+            const ordersTableBody = document.getElementById('orders-table-body');
+            const orderDetailsModal = document.getElementById('order-details-modal');
+            const orderIdElement = document.getElementById('order-id');
+            const orderDetailsContent = document.getElementById('order-details-content');
+            const updateStatusForm = document.getElementById('update-status-form');
+            const statusSelect = document.getElementById('status-select');
+            const statusMessage = document.getElementById('status-message');
+            const cancelUpdateBtn = document.getElementById('cancel-update');
+            
+            let currentOrderId = null;
+
+            // Fetch orders from the API
+            async function fetchOrders() {
+                try {
+                    const response = await fetch('/api/v1/admin/manage/orders', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch orders');
+                    }
+                    const data = await response.json();
+                    return data.data || [];
+                } catch (error) {
+                    console.error('Error fetching orders:', error);
+                    return [];
+                }
+            }
+
+            // Render orders table
+            async function renderOrders() {
+                try {
+                    const orders = await fetchOrders();
+                    
+                    if (orders.length === 0) {
+                        loadingIndicator.classList.add('hidden');
+                        noOrdersMessage.classList.remove('hidden');
+                        return;
+                    }
+
+                    ordersTableBody.innerHTML = '';
+                    
+                    orders.forEach(order => {
+                        const row = document.createElement('tr');
+                        
+                        // Format date
+                        const orderDate = new Date(order.createdAt);
+                        const formattedDate = orderDate.toLocaleDateString("<%= language === 'ar' ? 'ar-EG' : 'en-US' %>", {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+
+                        // Format status
+                        let statusClass = '';
+                        let statusText = '';
+                        
+                        switch(order.status) {
+                            case 'completed':
+                                statusClass = 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100';
+                                statusText = "<%= language === 'ar' ? 'مكتمل' : 'Completed' %>";
+                                break;
+                            case 'cancelled':
+                                statusClass = 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
+                                statusText = "<%= language === 'ar' ? 'ملغي' : 'Cancelled' %>";
+                                break;
+                            default: // pending
+                                statusClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100';
+                                statusText = "<%= language === 'ar' ? 'قيد الانتظار' : 'Pending' %>";
+                        }
+                        
+                        row.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                #${order.id}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                ${order.user?.email || 'N/A'}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                ${order.totalAmount} <span>${'USD'}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                                    ${statusText}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                ${formattedDate}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button onclick="viewOrderDetails('${order.id}')" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300">
+                                    <%= language === 'ar' ? 'عرض التفاصيل' : 'View Details' %>
+                                </button>
+                            </td>
+                        `;
+                        
+                        ordersTableBody.appendChild(row);
+                    });
+
+                    loadingIndicator.classList.add('hidden');
+                    ordersTable.classList.remove('hidden');
+                    
+                } catch (error) {
+                    console.error('Error rendering orders:', error);
+                    loadingIndicator.classList.add('hidden');
+                    errorAlert("<%= language === 'ar' ? 'حدث خطأ أثناء تحميل الطلبات' : 'Error loading orders' %>");
+                }
+            }
+
+            // View order details
+            window.viewOrderDetails = async (orderId) => {
+                try {
+                    currentOrderId = orderId;
+                    const response = await fetch(`/api/v1/admin/manage/orders/${orderId}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch order details');
+                    }
+                    const { data: order } = await response.json();
+                    
+                    // Set order ID
+                    orderIdElement.textContent = order.id;
+                    
+                    // Format order date
+                    const orderDate = new Date(order.createdAt);
+                    const formattedDate = orderDate.toLocaleDateString("<%= language === 'ar' ? 'ar-EG' : 'en-US' %>", {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    // Format status
+                    let statusText = '';
+                    switch(order.status) {
+                        case 'completed':
+                            statusText = "<%= language === 'ar' ? 'مكتمل' : 'Completed' %>";
+                            break;
+                        case 'cancelled':
+                            statusText = "<%= language === 'ar' ? 'ملغي' : 'Cancelled' %>";
+                            break;
+                        default: // pending
+                            statusText = "<%= language === 'ar' ? 'قيد الانتظار' : 'Pending' %>";
+                    }
+                    
+                    // Build order items HTML
+                    let itemsHtml = '';
+                    if (order.items && order.items.length > 0) {
+                        order.items = JSON.parse(order.items);
+                        let count = 0;
+                        itemsHtml = `
+                            <div class="mt-4">
+                                <h4 class="font-medium text-gray-900 dark:text-white">
+                                    <%= language === 'ar' ? 'المنتجات' : 'Products' %>
+                                </h4>
+                                <div class="border border-gray-200 dark:border-gray-700 rounded-md overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <thead class="bg-gray-50 dark:bg-gray-700">
+                                            <tr>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'المنتج' : 'Product' %>
+                                                </th>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'الكمية' : 'Quantity' %>
+                                                </th>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'معلومات اضافيه' : 'Additional Details' %>
+                                                </th>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'السعر' : 'Price' %>
+                                                </th>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'المجموع' : 'Total' %>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class=" <%= language === 'ar' ? 'text-right' : 'text-left' %> bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                            ${order.items.map(item => `
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${item.name}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${item.quantity}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${item?.dialogForms && item?.dialogForms?.length > 0 ? `<a href="/app/admin/panel/orders/${orderId}#item-${++count}" target="_blank" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"><%= language === 'ar' ? 'اضغط هنا لعرض التفاصيل' : 'Click to view details' %></a>` : '-'}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${parseFloat(item?.unitPrice).toFixed(3)} <span>USD</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${(item.quantity * parseFloat(item?.unitPrice)).toFixed(3)} <span>USD</span>
+                                                    </td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Set order details content
+                    orderDetailsContent.innerHTML = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900 dark:text-white">
+                                    <%= language === 'ar' ? 'معلومات العميل' : 'Customer Information' %>
+                                </h4>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                                    <strong><%= language === 'ar' ? 'الاسم:' : 'Name:' %></strong> ${order.user?.firstName || 'N/A'} ${order.user?.lastName || 'N/A'}<br>
+                                    <strong><%= language === 'ar' ? 'البريد الالكتروني:' : 'Email:' %></strong> ${order.user?.email || 'N/A'}<br>
+                                    <strong><%= language === 'ar' ? 'رقم الهاتف:' : 'Phone Number:' %></strong> +${order.user?.phoneNumber || 'N/A'}
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900 dark:text-white">
+                                    <%= language === 'ar' ? 'معلومات الطلب' : 'Order Information' %>
+                                </h4>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                                    <strong><%= language === 'ar' ? 'رقم الطلب:' : 'Order ID:' %></strong> ${order.id}<br>
+                                    <strong><%= language === 'ar' ? 'تاريخ الطلب:' : 'Order Date:' %></strong> ${formattedDate}<br>
+                                    <strong><%= language === 'ar' ? 'الحالة:' : 'Status:' %></strong> ${statusText}<br>
+                                </p>
+                                <p class="${(order?.couponCode)?.length > 0 ? 'block' : 'hidden'} mt-1 text-sm text-gray-600 dark:text-gray-300">
+                                    <strong><%= language === 'ar' ? 'كود الخصم:' : 'Discount Code:' %></strong> <span class="text-emerald-500 dark:text-emerald-400">${order?.couponCode || '-'}</span><br>
+                                    <strong><%= language === 'ar' ? 'الخصم:' : 'Discount:' %></strong> <span class="text-red-500 dark:text-red-400">${parseFloat(order?.couponDiscount).toFixed(3)} <span>USD</span></span>
+                                </p>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                                    <strong><%= language === 'ar' ? 'المجموع:' : 'Total:' %></strong> ${parseFloat(order.totalAmount).toFixed(3)} <span>USD</span>
+                                </p>
+                            </div>
+                        </div>
+                        ${itemsHtml}
+                    `;
+                    
+                    // Set current status in the select
+                    statusSelect.value = order.status;
+                    
+                    // Show the modal
+                    orderDetailsModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                    
+                } catch (error) {
+                    console.error('Error fetching order details:', error);
+                    errorAlert("<%= language === 'ar' ? 'حدث خطأ أثناء تحميل تفاصيل الطلب' : 'Error loading order details' %>");
+                }
+            };
+
+            // Close modal
+            function closeModal() {
+                orderDetailsModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                currentOrderId = null;
+                statusMessage.value = '';
+            }
+
+            // Event listeners
+            cancelUpdateBtn.addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            orderDetailsModal.addEventListener('click', (e) => {
+                if (e.target === orderDetailsModal) {
+                    closeModal();
+                }
+            });
+
+            // Handle status update
+            updateStatusForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (!currentOrderId || !statusMessage.value.trim()) {
+                    errorAlert("<%= language === 'ar' ? 'الرجاء إدخال رسالة للمستخدم' : 'Please enter a message for the user' %>");
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`/api/v1/admin/manage/orders/${currentOrderId}/status`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({
+                            status: statusSelect.value,
+                            message: statusMessage.value.trim()
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to update order status');
+                    }
+                    
+                    // Refresh orders list
+                    await renderOrders();
+                    closeModal();
+                    
+                    // Show success message
+                    successAlert("<%= language === 'ar' ? 'تم تحديث حالة الطلب بنجاح' : 'Order status updated successfully' %>");
+                    
+                } catch (error) {
+                    console.error('Error updating order status:', error);
+                    errorAlert("<%= language === 'ar' ? 'حدث خطأ أثناء تحديث حالة الطلب' : 'Error updating order status' %>");
+                }
+            });
+
+            // Initialize
+            renderOrders();
+        });
+    </script>
+    <script>
+        // Toggle dark mode
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+          document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+    
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+    
+        // Toggle sidebar on mobile
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        toggleSidebarBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('-translate-x-full');
+          sidebar.classList.toggle('translate-x-0');
+        });
+    
+        // Toggle language dropdown
+        const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+        const languageDropdown = document.getElementById('language-dropdown');
+        languageDropdownBtn.addEventListener('click', () => {
+          languageDropdown.classList.toggle('hidden');
+        });
+        
+        // User menu toggle
+        const userMenuBtn = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        userMenuBtn.addEventListener('click', () => {
+          userMenu.classList.toggle('hidden');
+        });
+        
+        // Close user menu when clicking outside
+        document.addEventListener('click', (event) => {
+          if (!userMenuBtn.contains(event.target) && !userMenu.contains(event.target)) {
+            userMenu.classList.add('hidden');
+          }
+        });
+    
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch user profile information
+                const response = await fetch('/app/profile');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user profile');
+                }
+    
+                const userData = await response.json();
+    
+                // Update user menu details
+                const userNameElement = document.querySelector('#user-menu .text-sm.font-medium');
+                const userEmailElement = document.querySelector('#user-menu .text-xs.text-gray-500');
+                const sidebarNameElement = document.querySelector('#user-profile p.font-medium');
+                const sidebarRoleElement = document.querySelector('#user-profile p.text-xs');
+    
+                if (userNameElement) {
+                    userNameElement.textContent = userData.firstName 
+                        ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                        : 'User';
+                }
+    
+                if (userEmailElement) {
+                    userEmailElement.textContent = userData.email || 'user@example.com';
+                }
+    
+                if (sidebarNameElement) {
+                    sidebarNameElement.textContent = userData.firstName 
+                        ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                        : 'User';
+                }
+    
+                if (sidebarRoleElement) {
+                    sidebarRoleElement.textContent = userData.role || 'Account';
+                }
+    
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+                // Optionally, show a user-friendly error message
+            }
+    
+            // User menu toggle functionality
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+    
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+    
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+
+        // Toggle dropdown visibility
+        userMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event from bubbling
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenu.classList.contains('hidden') && 
+                !userMenu.contains(e.target) && 
+                e.target !== userMenuButton) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    });
+    </script>
+    <script src="/static/js/profile.js"></script>
+    <script src="/static/js/language.js"></script>
+    <script src="/static/js/notification-bell.js"></script>
+    <%- include('../../../partials/footer') %>
+</body>
+</html>

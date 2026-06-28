@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= bank.name %></title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="/static/styles/animate.min.css">
+    <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                primary: {
+                  DEFAULT: '#3B82F6',
+                  '50': '#EBF2FF',
+                  '100': '#D6E4FF',
+                  '200': '#ADCAFD',
+                  '300': '#85B0FC',
+                  '400': '#5C96FB',
+                  '500': '#3B82F6',
+                  '600': '#0B61EF',
+                  '700': '#084BBD',
+                  '800': '#06368A',
+                  '900': '#042158'
+                },
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navbar -->
+        <%- include('../../partials/user/navbar') %>
+        
+        <!-- Sidebar and Main Content -->
+        <div class="flex flex-column pt-12">
+            <!-- Sidebar -->
+            <%- include('../../partials/user/sidebar') %>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 items-center justify-center p-4 md:p-6 md:<%= language === 'ar' ? 'mr-64' : 'ml-64' %>">
+            <% if (bank && bank.isActive && typeof bank === 'object' && Object.keys(bank).length > 0) { %>
+            <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4 transition-colors duration-200">
+                <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                    <div class="px-8 py-7">
+                        <div class="text-center mb-8">
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white"><%= bank.name %></h2>
+                            <div class="mt-4 text-gray-600 dark:text-white prose prose-sm dark:prose-invert prose-p:my-1 prose-p:leading-relaxed max-w-none">
+                                <%- bank.dialogDescription.replace(/\n/g, '<br>') %>
+                            </div>
+                        </div>
+                        <form id="bankForm" class="space-y-6" enctype="multipart/form-data">
+                            <input type="hidden" name="bankId" value="<%= bank.id %>">
+                            <div id="dynamicFormFields" class="grid grid-cols-12 gap-4">
+                            <% if (bank?.dialogHasForms && bank?.dialogForms?.length > 0) { %>
+                                <%
+                                    try {
+                                        fields = JSON.parse(bank.dialogForms);
+                                    } catch (error) {
+                                        fields = [];
+                                    }
+                                    if (fields && Object?.keys(fields)?.length > 0) {
+                                        Object.entries(fields).forEach(([key, value]) => {
+                                            const dynamicId = new Date().getTime();
+                                %>
+                                            <div class="relative w-full <%= value === 'small' ? 'col-span-6' : 'col-span-12' %>">
+                                                <label for="<%= dynamicId %>" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 top-4 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4 <%= language === 'ar' ? 'right-2.5 peer-focus:right-2.5' : 'left-2.5 peer-focus:left-2.5' %>">
+                                                    <%= key %>
+                                                </label>
+                                                <input id="<%= dynamicId %>" 
+                                                    name="<%= key %>" 
+                                                    type="text" 
+                                                    class="block px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-3xl border border-gray-300 dark:border-gray-600 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 dark:focus:border-blue-500 peer <%= language === 'ar' ? 'text-right' : 'text-left' %>"
+                                                    placeholder=" "
+                                                    autocomplete="off">
+                                            </div>
+                                <%      
+                                        })
+                                    }
+                                %>
+                            <!--<div>
+                                <label for="formValue" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                     bank.dialogFormField 
+                                </label>
+                                <input id="formValue" 
+                                    name="formValue" 
+                                    type="text" 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-200"
+                                    placeholder="userBank.enter  bank.dialogFormField.toLowerCase() "
+                                     bank.dialogHasForm ? 'required' : '' >
+                            </div>-->
+                            <% } %>
+                            </div>
+            
+                            <div>
+                                <label for="amount" class="mx-2 block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <%= userBank.amount %>
+                                </label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
+                                    </div>
+                                    <input id="amount" 
+                                        name="amount" 
+                                        type="number" 
+                                        step="0.01"
+                                        min="0.01"
+                                        required 
+                                        class="w-full pl-7 pr-4 py-3 rounded-3xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-200"
+                                        placeholder="0.00">
+                                </div>
+                            </div>
+            
+                            <div>
+                                <label class="mx-2 block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <%= userBank.paymentNotice %>
+                                </label>
+                                <div class="mt-1 flex rounded-md shadow-sm">
+                                    <input 
+                                        type="text" 
+                                        id="file-display" 
+                                        readonly 
+                                        class="flex-1 min-w-0 block w-full px-3 py-2 <%= language === 'ar' ? 'rounded-r-3xl' : 'rounded-l-3xl' %> border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
+                                        placeholder="<%= userBank.image_placeholder %>"
+                                    >
+                                    <label class="inline-flex items-center px-3 <%= language === 'ar' ? 'rounded-l-md' : 'rounded-r-md' %> border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 10-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                        </svg>
+                                        <input id="file-upload" name="file" type="file" class="sr-only" accept="image/*">
+                                    </label>
+                                </div>
+                                <p class="mx-2 mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    <%= userBank.image_note %>
+                                </p>
+                            </div>
+            
+                            <div class="pt-2">
+                                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition duration-200">
+                                    <%= userBank.submit_button %>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const fileInput = document.getElementById('file-upload');
+                const fileDisplay = document.getElementById('file-display');
+                const form = document.getElementById('bankForm');
+                const dynamicFormFields = document.getElementById('dynamicFormFields');
+
+                // Handle file selection
+                fileInput.addEventListener('change', function(e) {
+                    if (this.files && this.files[0]) {
+                        fileDisplay.value = this.files[0].name;
+                    } else {
+                        fileDisplay.value = '';
+                    }
+                });
+
+                // Remove the old drag and drop related code
+                const dropZone = form.querySelector('.border-dashed');
+                if (dropZone) {
+                    dropZone.remove();
+                }
+
+                // Handle form submission
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    const originalButtonText = submitButton.innerHTML;
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = `
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <%= userBank.submit_processing %>
+                    `;
+                    
+                    const formData = new FormData(form);
+                    try {
+                        let filePath = null;
+                        
+                        // Check if a file was selected
+                        const fileInput = document.getElementById('file-upload');
+                        if (fileInput.files && fileInput.files[0]) {
+                            const fileUploadResponse = await fetch('/api/v1/upload/bankNotice', {
+                                method: 'POST',
+                                body: formData
+                            });
+                                
+                            if (!fileUploadResponse.ok) {
+                                throw new Error('<%= userBank.error.image_upload %>');
+                            }
+                                
+                            const responseData = await fileUploadResponse.json();
+                            filePath = responseData.filePath;
+                        }
+
+                        const dynamicFields = {};
+                        if (document.getElementById('dynamicFormFields')) {
+                            document.querySelectorAll('#dynamicFormFields input').forEach((input) => {
+                                if (input.value?.length > 0) {
+                                    dynamicFields[input.name] = input.value;
+                                }
+                                formData.delete(input.name);
+                            })
+                            if (Object.keys(dynamicFields)?.length > 0) {
+                                formData.set('dynamicFields', JSON.stringify(dynamicFields));
+                            }
+                        }
+
+                        // Then submit the form with the file path (if any)
+                        const response = await fetch('/api/v1/user/manual-transaction', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                bankId: formData.get('bankId'),
+                                dialogForms: formData.get('dynamicFields'),
+                                dialogHasForms: Object.keys(dynamicFields)?.length > 0 ? true : false,
+                                amount: parseFloat(formData.get('amount')),
+                                noticeImagePath: filePath,
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            successAlert('<%= userBank.success %>');
+                            setTimeout(() => {
+                                window.location.href = '/app/user/add-balance';
+                            }, 1500);
+                        } else {
+                            console.log('Error:', response)
+                            throw new Error('<%= userBank.error.data_error %>');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        errorAlert(error.message);
+                    } finally {
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = originalButtonText;
+                    }
+                });
+            });
+            </script>
+            
+            <% } else { %>
+            <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4 transition-colors duration-200">
+                <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                    <div class="px-8 py-10 text-center">
+                        <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
+                            <svg class="h-8 w-8 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white"><%= userBank.error.bank_not_found %></h2>
+                        <p class="mt-2 text-gray-600 dark:text-gray-300">
+                            <%= userBank.error.bank_not_available %>
+                        </p>
+                        <div class="mt-6">
+                            <a href="/app/user/add-balance" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 transition duration-200">
+                                <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                                <%= userBank.back_to_banks %>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </main>
+        <%- include('../../partials/footer') %>
+    </div>
+    <script>
+        // Toggle dark mode
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        } else {
+        document.documentElement.classList.remove('dark');
+        }
+
+        // Toggle sidebar on mobile
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        toggleSidebarBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+        sidebar.classList.toggle('translate-x-0');
+        });
+
+        // Toggle language dropdown
+        const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+        const languageDropdown = document.getElementById('language-dropdown');
+        languageDropdownBtn.addEventListener('click', () => {
+        languageDropdown.classList.toggle('hidden');
+        });
+        
+        // User menu toggle
+        const userMenuBtn = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        userMenuBtn.addEventListener('click', () => {
+        userMenu.classList.toggle('hidden');
+        });
+        
+        // Close user menu when clicking outside
+        document.addEventListener('click', (event) => {
+        if (!userMenuBtn.contains(event.target) && !userMenu.contains(event.target)) {
+            userMenu.classList.add('hidden');
+        }
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch user profile information
+                const response = await fetch('/app/profile');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user profile');
+                }
+
+                const userData = await response.json();
+
+                // Update user menu details
+                const userNameElement = document.querySelector('#user-menu .text-sm.font-medium');
+                const userEmailElement = document.querySelector('#user-menu .text-xs.text-gray-500');
+                const sidebarNameElement = document.querySelector('#user-profile p.font-medium');
+                const sidebarRoleElement = document.querySelector('#user-profile p.text-xs');
+
+                if (userNameElement) {
+                    userNameElement.textContent = userData.firstName 
+                        ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                        : 'User';
+                }
+
+                if (userEmailElement) {
+                    userEmailElement.textContent = userData.email || 'user@example.com';
+                }
+
+                if (sidebarNameElement) {
+                    sidebarNameElement.textContent = userData.firstName 
+                        ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                        : 'User';
+                }
+
+                if (sidebarRoleElement) {
+                    sidebarRoleElement.textContent = userData.role || 'Account';
+                }
+
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+                // Optionally, show a user-friendly error message
+            }
+
+            // User menu toggle functionality
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+
+            // Toggle dropdown visibility
+            userMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent event from bubbling
+                userMenu.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!userMenu.classList.contains('hidden') && 
+                    !userMenu.contains(e.target) && 
+                    e.target !== userMenuButton) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script src="/static/js/profile.js"></script>
+    <script src="/static/js/language.js"></script>
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/notification-bell.js"></script>
+    <script src="/static/js/sweetalert2.js"></script>
+    <script src="/static/js/custom.js"></script>
+</body>
+</html>

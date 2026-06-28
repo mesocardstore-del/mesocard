@@ -1,0 +1,106 @@
+<!-- Add/Edit Bank Form -->
+<div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 shadow-md">
+    <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white" id="form-title">
+        <%= adminBank.form.title_add %>
+    </h3>
+    
+    <form id="bank-form" class="space-y-4">
+        <input type="hidden" id="bank-id" name="id">
+        
+        <!-- Bank Name -->
+        <div class="form-group">
+            <label for="bank-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <%= adminBank.form.name.label %>
+                <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="bank-name" name="name" required
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                placeholder="<%= adminBank.form.name.placeholder %>">
+            <p class="mt-1 text-sm text-red-600 hidden" id="name-error"></p>
+        </div>
+
+        <!-- Bank Logo -->
+        <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <%= adminBank.form.logo.label %>
+            </label>
+            <div class="mt-1 flex items-center">
+                <span class="inline-block h-20 w-20 overflow-hidden bg-gray-100 dark:bg-gray-700 rounded-full" id="logo-preview">
+                    <img id="logo-preview-img" src="" alt="" class="h-full w-full object-cover hidden">
+                    <div class="h-full w-full flex items-center justify-center text-gray-400">
+                        <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </span>
+                <label for="bank-logo" class="<%= language==='ar' ? 'mr-5' : 'ml-5' %> cursor-pointer bg-white py-2 px-3 border border-gray-300 dark:border-primary-600 bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 font-bold rounded-lg focus:outline-none focus:shadow-outline hover:bg-blue-100 dark:hover:bg-blue-900 rounded-md shadow-sm text-sm leading-4 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <%= adminBank.form.logo.upload_button %>
+                </label>
+                <input id="bank-logo" name="logo" type="file" class="hidden" accept="image/*">
+            </div>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <%= adminBank.form.logo.help_text %>
+            </p>
+            <p class="mt-1 text-sm text-red-600 hidden" id="logo-error"></p>
+        </div>
+
+        <!-- Status -->
+        <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <%= adminBank.form.status.label %>
+            </label>
+            <div class="mt-1">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="isActive" value="true" checked
+                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                    <span class="<%= language==='ar' ? 'mr-2' : 'ml-2' %> text-sm text-gray-700 dark:text-gray-300">
+                        <%= adminBank.form.status.active %>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Dynamic Specifications Section -->
+        <div class="sm:col-span-6 border-t border-gray-200 dark:border-gray-700 pt-6">
+            <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                <%= language === 'ar' ? 'الحقول الإضافية (اختياري)' : 'Additional Fields (Optional)' %>
+            </label>
+            <div id="dynamic-fields-container" class="form-group space-y-3">
+                <!-- New fields are injected here by JavaScript -->
+            </div>
+            <div class="flex items-center gap-4 mt-4">
+                <button id="add-field-btn" type="button" onclick="bankManager.addNewSpecification()" class="flex items-center justify-center gap-2 flex-1 bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 hover:bg-blue-100 dark:hover:bg-blue-900">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                    <%= language==='ar' ? 'إضافة حقل' : 'Add Field' %>
+                </button>
+                <button id="delete-field-btn" type="button" onclick="bankManager.deleteLastSpecification()" class="flex items-center justify-center gap-2 flex-1 bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-300 font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 hover:bg-red-100 dark:hover:bg-red-900">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
+                    <%= language==='ar' ? 'حذف اخر حقل' : 'Delete Last Field' %>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dialog Description -->
+        <div class="form-group">
+            <label for="bank-description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <%= adminBank.form.description.label %>
+            </label>
+            <textarea id="bank-description" name="dialogDescription" rows="3"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                placeholder="<%= adminBank.form.description.placeholder %>"></textarea>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <%= adminBank.form.description.help_text %>
+            </p>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex justify-end space-x-3 pt-4">
+            <button type="button" id="cancel-edit" class="hidden bg-white py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-black hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <%= adminBank.form.buttons.cancel %>
+            </button>
+            <button type="submit" id="submit-btn" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <%= adminBank.form.buttons.submit %>
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,36 @@
+<!-- Notifications -->
+<div class="relative">
+    <button id="notification-button" class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 relative">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span id="notification-count" class="absolute -top-1 -right-1 bg-primary-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+            0
+        </span>
+    </button>
+
+    <!-- Notification Dropdown -->
+    <div id="notification-dropdown" class="hidden absolute <%= language === 'ar' ? 'left-0' : 'right-0' %> mt-2 w-80 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+        <div class="p-4 border-b dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= notifications.title %></h3>
+                <button id="mark-all-read" class="text-sm text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300">
+                    <%= notifications.markRead %>
+                </button>
+            </div>
+        </div>
+        
+        <div id="notification-list" class="divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- Notifications will be inserted here -->
+        </div>
+
+        <div id="notification-empty" class="hidden p-4 text-center text-gray-500 dark:text-gray-400">
+            <%= notifications.empty %>
+        </div>
+
+        <div id="notification-loading" class="hidden p-4 text-center">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-primary-500 border-t-transparent"></div>
+        </div>
+    </div>
+</div>

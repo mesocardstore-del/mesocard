@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Meso Card</title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                primary: {
+                  DEFAULT: '#3B82F6',
+                  '50': '#EBF2FF',
+                  '100': '#D6E4FF',
+                  '200': '#ADCAFD',
+                  '300': '#85B0FC',
+                  '400': '#5C96FB',
+                  '500': '#3B82F6',
+                  '600': '#0B61EF',
+                  '700': '#084BBD',
+                  '800': '#06368A',
+                  '900': '#042158'
+                },
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        /* Remove number input spinners */
+        input[type="number"].quantity-input::-webkit-outer-spin-button,
+        input[type="number"].quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"].quantity-input {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navbar -->
+        <%- include('../../partials/user/navbar') %>
+        
+        <!-- Sidebar and Main Content -->
+        <div class="flex flex-column pt-12">
+            <!-- Sidebar -->
+            <%- include('../../partials/user/sidebar') %>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-4 md:p-6 md:<%= language === 'ar' ? 'mr-64' : 'ml-64' %>">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Cart Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white"><%= myCart.title %></h1>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            <span id="cart-items-count">0</span> items
+                        </span>
+                    </div>
+
+                    <!-- Cart Items -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+                        <div id="cart-items" class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Cart items will be dynamically inserted here -->
+                        </div>
+
+                        <!-- Empty Cart State -->
+                        <div id="empty-cart" class="p-8 text-center hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <p class="mt-4 text-gray-500 dark:text-gray-400"><%= myCart.emptyCart %></p>
+                            <a href="/" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
+                                <%= myCart.continueShopping %>
+                            </a>
+                        </div>
+
+                        <!-- Coupon Box -->
+                        <div id="coupon-box" class="pt-4">
+                            <div class="flex items-center gap-2 justify-end">
+                                <div class="relative">
+                                    <input type="text" id="coupon-code" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                                    placeholder=" " />
+                                    <label for="coupon-code" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+                                        Coupon Code
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cart Summary -->
+                        <div id="cart-summary" class="border-t border-gray-200 dark:border-gray-700 p-4">
+                            <div id="discount-box" class="hidden">
+                                <div id="total-before-discount" class="flex justify-between text-base font-medium">
+                                    <p class="text-sm text-gray-900 dark:text-gray-400"><%= myCart.summary %></p>
+                                    <p id="total-before-discount-value" class="text-red-900 dark:text-red-400">$0.00</p>
+                                </div>
+                                <div id="coupon-discount" class="flex justify-between text-base font-medium">
+                                    <p class="text-sm text-gray-900 dark:text-gray-400"><%= myCart.discountValue %></p>
+                                    <p id="coupon-discount-value" class="text-emerald-600 dark:text-emerald-400">-$0.00</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-base font-medium">
+                                <p class="text-gray-900 dark:text-white font-semibold"><%= myCart.total %></p>
+                                <p id="cart-subtotal" class="text-gray-900 dark:text-white font-bold">$0.00</p>
+                            </div>
+                            <div class="mt-4">
+                                <button id="checkout-btn" class="w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    <%= myCart.checkout %>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Cart Item Template -->
+    <template id="cart-item-template">
+        <div class="cart-item flex p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+            <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-600">
+                <img class="h-full w-full object-cover object-center" src="" alt="">
+            </div>
+            <div class="<%= language === 'ar' ? 'mr-4' : 'ml-4' %> flex flex-1 flex-col">
+                <div>
+                    <div class="flex justify-between text-base font-medium text-gray-900 dark:text-gray-100">
+                        <h3 class="item-name"></h3>
+                        <p class="<%= language === 'ar' ? 'mr-4' : 'ml-4' %> item-price text-primary-600 dark:text-primary-400"></p>
+                    </div>
+                    <p class="mt-1 mb-3 text-sm text-gray-500 dark:text-gray-400 item-description"></p>
+                </div>
+                <div class="flex flex-1 items-end justify-between text-sm">
+                    <div class="flex items-center space-x-1">
+                        <button class="quantity-decrease px-2 py-1 rounded-l border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors duration-200">-</button>
+                        <input type="number" readonly class="quantity-input w-12 text-center border-t border-b border-gray-300 dark:border-gray-600 bg-transparent text-gray-900 dark:text-gray-100" value="1" min="1">
+                        <button class="quantity-increase px-2 py-1 rounded-r border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors duration-200">+</button>
+                    </div>
+                    <div class="flex">
+                        <button class="remove-item font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-200"><%= myCart.removeItem %></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        // Theme toggle functionality
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Check for saved theme preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Toggle language dropdown
+        const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+        const languageDropdown = document.getElementById('language-dropdown');
+        languageDropdownBtn.addEventListener('click', () => {
+          languageDropdown.classList.toggle('hidden');
+        });
+        
+        // Initialize cart functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch cart items
+            fetchCartItems();
+
+            // Setup event listeners
+            document.getElementById('checkout-btn').addEventListener('click', () => handleCheckout());
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch user profile information
+                const response = await fetch('/app/profile');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user profile');
+                }
+
+                const userData = await response.json();
+
+                // Update user menu details
+                const userNameElement = document.querySelector('#user-menu .text-sm.font-medium');
+                const userEmailElement = document.querySelector('#user-menu .text-xs.text-gray-500');
+                const sidebarNameElement = document.querySelector('#user-profile p.font-medium');
+                const sidebarRoleElement = document.querySelector('#user-profile p.text-xs');
+
+                if (userNameElement) {
+                    userNameElement.textContent = userData.firstName 
+                        ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                        : 'User';
+                }
+
+                if (userEmailElement) {
+                    userEmailElement.textContent = userData.email || 'user@example.com';
+                }
+
+                if (sidebarNameElement) {
+                    sidebarNameElement.textContent = userData.firstName 
+                        ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                        : 'User';
+                }
+
+                if (sidebarRoleElement) {
+                    sidebarRoleElement.textContent = userData.role || 'Account';
+                }
+
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+            }
+
+            // User menu toggle functionality
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        });
+        
+        const discountBox = document.getElementById('discount-box');
+        const totalBeforeDiscountValue = document.getElementById('total-before-discount-value');
+        const couponDiscountValue = document.getElementById('coupon-discount-value');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        let couponCodeValid = false;
+        let couponDiscountPercent = 0;
+        let couponDiscount = 0;
+        let totalBeforeDiscount = 0;
+        let cartItems = new Set();
+        const couponBox = document.getElementById('coupon-box');
+        const couponCodeInput = document.getElementById('coupon-code');
+        couponCodeInput.addEventListener('change', () => {
+            couponCodeValid = false;
+            couponDiscountPercent = 0;
+            couponDiscount = 0;
+            // return the price to the normal
+            checkCoupon(couponCodeInput?.value);
+            fetchCartItems();
+            if (!couponCodeValid) {
+                // hide coupon box
+                couponBox.classList.add('hidden');
+            }
+        });
+
+        async function fetchCartItems() {
+            try {
+                const defaultOptions = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include', 
+                };
+                
+                const response = await fetch('/api/v1/user/cart', defaultOptions);
+                const data = await response.json();
+
+                if (data?.success) {
+                    renderCartItems(data?.results);
+                    updateCartSummary(data?.results);
+
+                    if (couponCodeValid) {
+                        updateDiscountBox(totalBeforeDiscount, couponDiscount);
+                    }
+                    cartItems = new Set(data?.results?.map(item => item.productId));
+                }
+            } catch (error) {
+                errorAlert('حدث خطأ ما عند احضار عناصر سلة المشتريات');
+                console.error('Error fetching cart items:', error);
+            }
+        }
+
+        function renderCartItems(items) {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const emptyCartElement = document.getElementById('empty-cart');
+            const cartSummaryElement = document.getElementById('cart-summary');
+            const template = document.getElementById('cart-item-template');
+
+            cartItemsContainer.innerHTML = '';
+
+            if (items.length === 0) {
+                emptyCartElement.classList.remove('hidden');
+                cartSummaryElement.classList.add('hidden');
+                couponBox.classList.add('hidden');
+                return;
+            }
+
+            emptyCartElement.classList.add('hidden');
+            cartSummaryElement.classList.remove('hidden');
+            couponBox.classList.remove('hidden');
+
+            items.forEach(item => {
+                const clone = template.content.cloneNode(true);
+
+                
+                if (item?.dialogForms && Object?.keys(item?.dialogForms).length > 0) {
+                    const dialogForms = JSON.parse(item?.dialogForms);
+                    const dialogFormsText = Object?.entries(dialogForms).map(([key, value]) => `${key}: ${value}`).join('<br>');
+                    clone.querySelector('.item-description').innerHTML = dialogFormsText;
+                }
+                // Set item details
+                clone.querySelector('.item-name').textContent = item.product.name;
+                clone.querySelector('.item-price').textContent = `$${(parseFloat(item.product.price) * item?.quantity).toFixed(3)}`;
+                clone.querySelector('img').src = item.product.imagePath;
+                clone.querySelector('.quantity-input').value = item.quantity;
+                clone.querySelector('.quantity-input').min = item.product.minUnits;
+
+                // Add event listeners
+                clone.querySelector('.remove-item').addEventListener('click', () => removeItem(item.id));
+                clone.querySelector('.quantity-decrease').addEventListener('click', () => updateQuantity(item.id, item?.product?.minUnits, -1));
+                clone.querySelector('.quantity-increase').addEventListener('click', () => updateQuantity(item.id, item?.product?.minUnits, 1));
+
+                cartItemsContainer.appendChild(clone);
+            });
+
+            document.getElementById('cart-items-count').textContent = items.length;
+        }
+
+        function updateCartSummary(items) {
+            let subtotal = items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            totalBeforeDiscount = subtotal;
+            if (couponCodeValid) {
+                couponDiscount = (subtotal / 100) * couponDiscountPercent;
+                subtotal -= couponDiscount || 0;
+                subtotal < 0 ? subtotal = 0 : null;
+            }
+            document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(3)}`;
+        }
+
+        function updateDiscountBox(total, discountValue) {
+            if (couponCodeValid) {
+                totalBeforeDiscountValue.textContent = `$${totalBeforeDiscount.toFixed(3)}`;
+                couponDiscountValue.textContent = `-$${discountValue.toFixed(3)}`;
+                cartSubtotal.textContent = `$${(parseFloat(total) - discountValue).toFixed(3)}`;
+            }
+        }
+
+        async function updateQuantity(productId, minUnits, change) {
+            try {
+                const quantityMinMessage = "<%= language === 'ar' ? 'الكمية يجب ان تكون اكبر من او تساوي ' : 'Quantity must be greater than or equal to ' %>";
+                const response = await fetch('/api/v1/user/cart/update-quantity', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ productId, change })
+                });
+                const data = await response?.json();
+                if (response?.ok) {
+                    fetchCartItems(); // Refresh cart display
+                } else if (response?.status === 400 && data?.message === 'Invalid quantity change.') {
+                    errorAlert(quantityMinMessage + minUnits);
+                } else {
+                    errorAlert('حدث خطأ ما عند تحديث العنصر');
+                }
+            } catch (error) {
+                errorAlert('حدث خطأ ما عند تحديث العنصر');
+                console.error('Error updating quantity:', error);
+            }
+        }
+
+        async function removeItem(productId) {
+            try {
+                const response = await fetch(`/api/v1/user/cart/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response?.ok) {
+                    fetchCartItems(); // Refresh cart display
+                }
+                cartItems.delete(productId);
+            } catch (error) {
+                errorAlert('حدث خطأ ما عند ازالة العنصر');
+                console.error('Error removing item:', error);
+            }
+        }
+
+        async function handleCheckout() {
+            const cartItemsCount = parseInt(document.getElementById('cart-items-count').textContent);
+            
+            if (cartItemsCount === 0) {
+                console.warn('Cannot checkout with empty cart');
+                return;
+            }
+            try {
+
+                let options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+
+                if (couponCodeValid && couponCodeInput?.value) {
+                    options.body = JSON.stringify({ couponCode: couponCodeInput?.value })
+                }
+
+                const response = await fetch('/api/v1/user/cart/checkout', options);
+
+                if (response.ok) {
+                    window.location.href = '/app/orders'; // Redirect to checkout page
+                } else if (response.status === 402) {
+                    const s_message = "<%= language === 'ar' ? 'لا يوجد لديك رصيد كافي لأتمام العمليه' : 'You do not have enough balance to complete the transaction' %>";
+                    errorAlert(s_message);
+                    console.error('Error during checkout:', response);
+                } else {
+                    const e_message = "<%= language === 'ar' ? 'حدث خطأ ما عند اتمام العمليه' : 'An error occurred while completing the transaction' %>";
+                    errorAlert(e_message);
+                    console.error('Error during checkout:', response);
+                }
+
+            } catch (error) {
+                console.error('Error during checkout:', error);
+            }
+        }
+
+        function isCartItemsAllowedInCoupon(couponItems, cartItems) {
+            let isCompatible = true;
+            // if couponItems is an array and has items convert its array items to int
+            if (Array.isArray(couponItems) && couponItems.length > 0) {
+                couponItems = couponItems.map(item => parseInt(item));
+            } else {
+                return { isCompatible: null, notAllowedItems: null };
+            }
+
+            const notAllowedItems = [...cartItems].filter(item => !couponItems?.includes(item));
+            if (notAllowedItems?.length > 0) {
+                isCompatible = false;
+            }
+
+            return { isCompatible, notAllowedItems };
+        }
+
+        async function checkCoupon(couponCode) {
+            try {
+                const response = await fetch(`/api/v1/user/coupons/${couponCode}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const results = data?.results;
+
+                    if (cartItems.size === 0) {
+                        const e_message = "<%= language === 'ar' ? 'لا يوجد عناصر في سلة المشتريات' : 'No items in the cart' %>";
+                        errorAlert(e_message);
+                        return;
+                    }
+                    
+                    if (couponCodeValid) {
+                        const e_message = "<%= language === 'ar' ? 'لا يمكن تطبيق كوبون جديد قبل انتهاء استخدام الكوبون السابق' : 'Cannot apply a new coupon before the previous coupon expires' %>";
+                        errorAlert(e_message);
+                        return;
+                    }
+
+                    if (results?.expirationDate < (new Date().toISOString()).split('T')[0]) {
+                        const e_message = "<%= language === 'ar' ? 'الكوبون انتهى استخدامه' : 'The coupon has expired' %>";
+                        errorAlert(e_message);
+                        return;
+                    }
+                    
+                    const { isCompatible, notAllowedItems } = isCartItemsAllowedInCoupon(results?.allowedProducts, cartItems);
+                    if (!isCompatible) {
+                        // show not allowed items in alert
+                        const notAllowedItemsString = notAllowedItems.join(', ');
+                        const e_message = "<%= language === 'ar' ? 'الكوبون غير متوافق مع عناصر سلة المشتريات' : 'The coupon is not compatible with the cart items' %>";
+                        errorAlert(e_message + ' ' + notAllowedItemsString);
+                        return;
+                    }
+
+                    const total = parseFloat(cartSubtotal?.textContent.replaceAll('$', ''));
+                    let discountPercent = parseInt(results?.discountPercent);
+
+                    if (!total || typeof discountPercent !== 'number') {
+                        discountPercent = 0;
+                    }
+
+                    const discountValue = (parseFloat(total) / 100) * parseFloat(discountPercent);
+                    couponDiscount = discountValue || 0;
+                    couponDiscountPercent = discountPercent || 0;
+
+                    couponCodeValid = true;
+                    totalBeforeDiscountValue.textContent = `$${total}`;
+                    couponDiscountValue.textContent = `-$${discountValue.toFixed(3)}`;
+                    cartSubtotal.textContent = `$${(parseFloat(total) - discountValue).toFixed(3)}`;
+                    discountBox.classList.remove('hidden');
+                } else {
+                    const e_message = "<%= language === 'ar' ? 'الكوبون غير صحيح' : 'Invalid coupon' %>";
+                    errorAlert(e_message);
+                    console.error('Error applying coupon:', response);
+                    couponCodeValid = false;
+                }
+            } catch (error) {
+                console.error('Error applying coupon:', error);
+            }
+        }
+
+        function applyCoupon(couponCode) {
+            checkCoupon(couponCode);
+        }
+
+        // Toggle sidebar on mobile
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        toggleSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+        });
+    </script>
+    <script src="/static/js/profile.js"></script>
+    <script src="/static/js/language.js"></script>
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/notification-bell.js"></script>
+    <script src="/static/js/sweetalert2.js"></script>
+    <script src="/static/js/custom.js"></script>
+    <%- include('../../partials/footer') %>
+</body>
+</html>

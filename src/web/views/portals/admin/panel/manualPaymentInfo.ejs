@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= language === 'ar' ? 'عرض البيانات الأضافية' : 'Show Additional Data' %></title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="/static/styles/animate.min.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        [id] {
+            scroll-margin-top: 6rem; /* h-24 = 6rem (adjust based on your header height) */
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#3B82F6',
+                            '50': '#EBF2FF',
+                            '100': '#D6E4FF',
+                            '200': '#ADCAFD',
+                            '300': '#85B0FC',
+                            '400': '#5C96FB',
+                            '500': '#3B82F6',
+                            '600': '#0B61EF',
+                            '700': '#084BBD',
+                            '800': '#06368A',
+                            '900': '#042158'
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div class="min-h-screen flex flex-col">
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <%- include('../../../partials/admin/adminPanelNav') %>
+
+            <!-- Sidebar -->
+            <%- include('../../../partials/admin/adminPanelSidebar') %>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-800 p-4 mt-16 md:p-6 md:<%= language === 'ar' ? 'mr-64' : 'ml-64' %>">
+                <div class="container mx-auto px-4 py-6 max-w-6xl">
+                    <!-- Page Header -->
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+                        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 md:mb-0">
+                            <svg class="inline w-6 h-6 mr-2 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <%= language === 'ar' ? 'عرض البيانات المدفوعة باليد' : 'Show Manual Payment Data' %>
+                        </h1>
+                        <button id="back-button" class="flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            <svg class="<%= language === 'ar' ? 'ml-2' : 'mr-2' %> w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            <%= language === 'ar' ? 'رجوع' : 'Back' %>
+                        </button>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                <svg class="inline w-5 h-5 mr-2 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <%= language === 'ar' ? 'رقم المدفوعة #' + paymentId : 'Manual Payment ID #' + paymentId %>
+                            </h2>
+                        </div>
+                        
+                        <div class="w-full p-4 md:p-8 bg-gray-50 dark:bg-gray-900/50">
+                            <% if (items && Object.keys(items).length > 0) { %>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <thead class="bg-gray-50 dark:bg-gray-800">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'الاسم' : 'Name' %>
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'القيمة' : 'Value' %>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                                            <% Object.entries(items)?.forEach(([key, value]) => { %>
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                                        <%= key %>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                                        <%= value %>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <% } else { %>
+                                <div class='text-center p-8 mt-8 flex flex-col items-center justify-center h-full'>
+                                    <svg class='w-32 h-32 text-red-500' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'>
+                                        <path d='M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z'/>
+                                        <path d='M15 9l-6 6'/>
+                                        <path d='M9 9l6 6'/>
+                                    </svg>
+                                    <p class='mt-4 text-gray-500 dark:text-gray-400'>
+                                        <%= language === 'ar' ? 'لا توجد بيانات اضافية متاحة لهذا المدفوعة' : 'No additional data available for this manual payment' %>
+                                    </p>
+                                </div>
+                            <% } %>
+                        </div>
+                        
+                        <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-right">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">
+                                <%= language === 'ar' ? 'آخر تحديث: ' : 'Last updated: ' %><%= new Date().toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US') %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    document.getElementById('back-button').addEventListener('click', function() {
+                        window.history.back();
+                    });
+                </script>
+            </main>
+        </div>
+    </div>
+
+<script>
+    // Toggle dark mode
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    themeToggleBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Check for saved theme preference
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+
+    // Toggle sidebar on mobile
+    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+    const sidebar = document.getElementById('sidebar');
+    toggleSidebarBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+        sidebar.classList.toggle('translate-x-0');
+    });
+
+    // Toggle language dropdown
+    const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+    const languageDropdown = document.getElementById('language-dropdown');
+    languageDropdownBtn.addEventListener('click', () => {
+        languageDropdown.classList.toggle('hidden');
+    });
+    
+    // User menu toggle
+    const userMenuBtn = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    userMenuBtn.addEventListener('click', () => {
+        userMenu.classList.toggle('hidden');
+    });
+    
+    // Close user menu when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!userMenuBtn.contains(event.target) && !userMenu.contains(event.target)) {
+            userMenu.classList.add('hidden');
+        }
+    });
+</script>
+
+<script>
+    document.getElementById('image').addEventListener('change', function(e) {
+        const fileInfo = document.getElementById('file-info');
+        const uploadSvg = document.getElementById('upload-svg');
+        
+        if (this.files.length > 0) {
+            fileInfo.textContent = this.files[0].name;
+            fileInfo.classList.remove('hidden');
+            uploadSvg.classList.add('text-green-500');
+        } else {
+            fileInfo.classList.add('hidden');
+            uploadSvg.classList.remove('text-green-500');
+        }
+    });
+</script>
+<script src="/static/js/language.js"></script>
+<script src="/static/js/profile.js"></script>
+<script src="/static/js/notification-bell.js"></script>
+<%- include('../../../partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!-- User Form Modal -->
+<div id="userFormModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div id="modalBackdrop" class="fixed inset-0 bg-gray-600 backdrop-blur-sm bg-gray-900/20 dark:backdrop-blur-sm dark:bg-gray-900/20" aria-hidden="true"></div>
+
+        <!-- Modal panel -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+        <div class="inline-block animate__animated animate__fadeIn align-bottom bg-white dark:bg-gray-800 rounded-lg <%= language === 'ar' ? 'text-right' : 'text-left' %> overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <form id="userForm" class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <input type="hidden" id="userId" name="userId">
+                
+                <!-- Modal header -->
+                <div class="flex justify-between items-center pb-3">
+                    <h3 id="modalTitle" class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+                        <%= userForm.addTitle %>
+                    </h3>
+                    <button type="button" id="closeModal" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <span class="sr-only"><%= common.close %></span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Form fields -->
+                <div class="space-y-4">
+                    <!-- First Name -->
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= userForm.fields.firstName %></label>
+                        <input type="text" name="firstName" id="firstName" required
+                            class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm">
+                        <p class="mt-1 text-sm text-red-600 hidden" id="firstNameError"></p>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= userForm.fields.lastName %></label>
+                        <input type="text" name="lastName" id="lastName" required
+                            class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm">
+                        <p class="mt-1 text-sm text-red-600 hidden" id="lastNameError"></p>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= userForm.fields.email %></label>
+                        <input type="email" name="email" id="email" required
+                            class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm">
+                        <p class="mt-1 text-sm text-red-600 hidden" id="emailError"></p>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div>
+                        <label for="phoneNumber" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= userForm.fields.phoneNumber %></label>
+                        <input type="tel" name="phoneNumber" id="phoneNumber"
+                            class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm">
+                        <p class="mt-1 text-sm text-red-600 hidden" id="phoneNumberError"></p>
+                    </div>
+
+                    <!-- Role -->
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= userForm.fields.role %></label>
+                        <select id="role" name="role" required
+                            class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm">
+                            <option value="user"><%= userForm.roleOptions.user %></option>
+                            <option value="admin"><%= userForm.roleOptions.admin %></option>
+                        </select>
+                    </div>
+
+                    <!-- Badge -->
+                    <div>
+                        <label for="badge" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= userForm.fields.badge %></label>
+                        <input type="text" name="badge" id="badge"
+                            class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm">
+                    </div>
+
+                    <!-- Password (only shown for new users) -->
+                    <div id="passwordFields">
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= userForm.fields.password %></label>
+                        <input type="password" name="password" id="password" autocomplete="new-password"
+                            class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm">
+                        <p class="mt-1 text-sm text-gray-500" id="passwordHelp"><%= userForm.fields.passwordHelp %></p>
+                        <p class="mt-1 text-sm text-red-600 hidden" id="passwordError"></p>
+                    </div>
+
+                    <!-- Status -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"><%= usersTable.filters.status.label %></label>
+                        <div class="flex items-center space-x-4 <%= language === 'ar' ? 'space-x-reverse' : '' %>">
+                            <div class="flex items-center">
+                                <input id="statusActive" name="status" type="radio" value="active" checked
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                                <label for="statusActive" class="<%= language === 'ar' ? 'mr-2' : 'ml-2' %> block text-sm text-gray-700 dark:text-gray-300">
+                                    <%= usersTable.filters.status.active %>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="statusPending" name="status" type="radio" value="pending"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                                <label for="statusPending" class="<%= language === 'ar' ? 'mr-2' : 'ml-2' %> block text-sm text-gray-700 dark:text-gray-300">
+                                    <%= usersTable.filters.status.pending %>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="statusLocked" name="status" type="radio" value="locked"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                                <label for="statusLocked" class="<%= language === 'ar' ? 'mr-2' : 'ml-2' %> block text-sm text-gray-700 dark:text-gray-300">
+                                    <%= usersTable.filters.status.locked %>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form actions -->
+                <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                    <button type="submit"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:col-start-2 sm:text-sm">
+                        <%= userForm.buttons.save %>
+                    </button>
+                    <button type="button" id="cancelForm"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:col-start-1 sm:text-sm dark:bg-gray-700 dark:text-white dark:border-gray-600">
+                        <%= userForm.buttons.cancel %>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Success Notification -->
+<div id="successNotification" class="fixed bottom-4 <%= language === 'ar' ? 'left-4' : 'right-4' %> bg-green-500 text-white px-4 py-2 rounded-md shadow-lg hidden">
+    <div class="flex items-center">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span id="successMessage"><%= userForm.messages.userCreated %></span>
+    </div>
+</div>

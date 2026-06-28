@@ -1,0 +1,119 @@
+<div class="flex flex-col gap-4">
+    <!-- Search and Add Button -->
+    <div class="flex flex-col sm:flex-row flex-wrap gap-4 sm:justify-between sm:items-center">
+        <div class="w-full sm:flex-1">
+            <div class="relative">
+                <input type="text" id="product-search" 
+                    class="w-full px-4 py-2 pl-10 text-sm border rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                    placeholder="<%= productsTable.filters.search.placeholder %>">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <button id="add-product-btn" 
+                class="w-full sm:w-auto text-white bg-gradient-to-r from-blue-500 via-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                <%= productsTable.filters.addProduct %>
+            </button>
+        </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-800">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider <%= language === 'ar' ? 'text-right' : 'text-left' %> text-gray-500 dark:text-gray-400 uppercase">
+                        <%= productsTable.columns.orderId %>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider <%= language === 'ar' ? 'text-right' : 'text-left' %> text-gray-500 dark:text-gray-400 uppercase">
+                        <%= productsTable.columns.name %>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider <%= language === 'ar' ? 'text-right' : 'text-left' %> text-gray-500 dark:text-gray-400 uppercase">
+                        <%= productsTable.columns.price %>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider <%= language === 'ar' ? 'text-right' : 'text-left' %> text-gray-500 dark:text-gray-400 uppercase">
+                        <%= productsTable.columns.price_jod %>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider <%= language === 'ar' ? 'text-right' : 'text-left' %> text-gray-500 dark:text-gray-400 uppercase">
+                        <%= productsTable.columns.is_available %>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider <%= language === 'ar' ? 'text-right' : 'text-left' %> text-gray-500 dark:text-gray-400 uppercase">
+                        <%= productsTable.columns.form %>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider <%= language === 'ar' ? 'text-right' : 'text-left' %> text-gray-500 dark:text-gray-400 uppercase">
+                        <%= productsTable.columns.actions %>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
+                <% products.forEach(product => { %>
+                <tr data-product-id="<%= product.id %>" class="h-16">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <input type="number" 
+                                   value="<%= product.orderId %>" 
+                                   onchange="updateProductOrder('<%= product.id %>', this.value)"
+                                   class="w-16 px-2 py-1 text-sm border rounded-md focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                                   min="1">
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900 dark:text-white">
+                            <%= product.name %>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            <%= (product.price * product.minUnits).toFixed(3) %>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            <%= (product.price_jod * product.minUnits).toFixed(3) %>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= product.isAvailable ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-400' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-400' %>">
+                            <%= product.isAvailable ? common.yes : common.no %>
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= product.dialogHasForms ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-400' %>">
+                            <%= product.dialogHasForms ? common.yes : common.no %>
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                        <div class="relative inline-block text-center">
+                            <button type="button" 
+                                class="inline-flex items-center text-gray-400 hover:text-gray-600 focus:outline-none menu-button" 
+                                data-productid="<%= product.id %>"
+                                aria-haspopup="true">
+                                <span class="sr-only">Actions</span>
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                                </svg>
+                            </button>
+                            <div id="menu-<%= product.id %>" 
+                                 class="hidden origin-top-right absolute <%= language === 'ar' ? 'left-0' : 'right-0' %> mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-10" 
+                                 role="menu">
+                                <div class="py-1" role="none">
+                                    <button onclick="event.stopPropagation(); editProduct('<%= product.id %>')" class="text-gray-700 dark:text-gray-300 block w-full <%= language === 'ar' ? 'text-right' : 'text-left' %> px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">
+                                        <%= common.edit %>
+                                    </button>
+                                    <button onclick="event.stopPropagation(); deleteProduct('<%= product.id %>')" class="text-red-600 dark:text-red-400 block w-full <%= language === 'ar' ? 'text-right' : 'text-left' %> px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">
+                                        <%= common.delete %>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= adminBank.title %>
+    </title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="/static/styles/animate.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#3B82F6',
+                            '50': '#EBF2FF',
+                            '100': '#D6E4FF',
+                            '200': '#ADCAFD',
+                            '300': '#85B0FC',
+                            '400': '#5C96FB',
+                            '500': '#3B82F6',
+                            '600': '#0B61EF',
+                            '700': '#084BBD',
+                            '800': '#06368A',
+                            '900': '#042158'
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navbar -->
+        <%- include('../../../partials/admin/adminPanelNav') %>
+
+        <!-- Sidebar -->
+        <%- include('../../../partials/admin/adminPanelSidebar') %>
+
+        <!-- Main Content -->
+        <main class="flex-1 items-center justify-center p-4 md:p-6 md:<%= language === 'ar' ? 'mr-64' : 'ml-64' %>">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+                            <%= adminBank.title %>
+                        </h2>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                            <%= adminBank.subtitle %>
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col gap-6 p-6">
+                        <!-- Bank Form -->
+                        <%- include('./partials/bankForm') %>
+
+                        <!-- Banks List -->
+                        <%- include('./partials/banksTable') %>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/static/js/sweetalert2.js"></script>
+    <script src="/static/js/custom.js"></script>
+    <script>
+        // Toggle dark mode
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark' ||
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Toggle sidebar on mobile
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        toggleSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+        });
+
+        // Toggle language dropdown
+        const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+        const languageDropdown = document.getElementById('language-dropdown');
+        languageDropdownBtn.addEventListener('click', () => {
+            languageDropdown.classList.toggle('hidden');
+        });
+
+
+        // User menu toggle
+        const userMenuBtn = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        userMenuBtn.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Close user menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!userMenuBtn.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    </script>
+    <script src="/static/js/adp-banks.js" type="module"></script>
+    <script src="/static/js/profile.js"></script>
+    <script src="/static/js/language.js"></script>
+    <script src="/static/js/notification-bell.js"></script>
+</body>
+</html>

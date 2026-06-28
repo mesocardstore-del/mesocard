@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meso Card</title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="/static/styles/animate.min.css">
+    <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                primary: {
+                  DEFAULT: '#3B82F6',
+                  '50': '#EBF2FF',
+                  '100': '#D6E4FF',
+                  '200': '#ADCAFD',
+                  '300': '#85B0FC',
+                  '400': '#5C96FB',
+                  '500': '#3B82F6',
+                  '600': '#0B61EF',
+                  '700': '#084BBD',
+                  '800': '#06368A',
+                  '900': '#042158'
+                },
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navbar -->
+        <%- include('../../partials/user/navbar') %>
+        
+        <!-- Sidebar and Main Content -->
+        <div class="flex flex-column pt-12">
+            <!-- Sidebar -->
+            <%- include('../../partials/user/sidebar') %>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 items-center justify-center p-4 md:p-6 md:<%= language === 'ar' ? 'mr-64' : 'ml-64' %>">
+            <!-- Grid for banks with images -->
+            <div class="flex-1 items-center justify-center mt-8 mb-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl 3xl:max-w-6xl 4xl:max-w-7xl mx-auto">
+                <div id="categoryGrid" class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <% if(Array.isArray(banks) && banks.length > 0 && typeof banks !== 'undefined') { %>
+                        <% banks.forEach(bank => { %>
+                        <div class="category-item flex flex-col items-center w-full relative" data-category-name="<%= bank.name.toLowerCase() %>">
+                            <a href="<%= bank.isActive ? `/bank/${bank.id}` : '#' %>" class="w-full <%= !bank.isActive ? 'cursor-default' : '' %>">
+                                <div class="w-full aspect-square bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition duration-300 ease-in-out hover:scale-105 relative">
+                                    <% if (bank.imagePath) { %>
+                                        <img 
+                                            src="<%= bank.imagePath %>" 
+                                            alt="<%= bank.name %>" 
+                                            class="w-full h-full object-cover <%= !bank.isActive ? 'filter grayscale' : '' %>"
+                                            loading="lazy"
+                                        >
+                                        <% if (!bank.isActive) { %>
+                                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                                <span class="text-white font-bold text-lg bg-red-500 px-3 py-1 rounded-full">
+                                                    <%= language === 'ar' ? 'غير متوفر' : 'Unavailable' %>
+                                                </span>
+                                            </div>
+                                        <% } %>
+                                    <% } else { %>
+                                        <div class="w-full h-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-600 dark:to-primary-700 flex items-center justify-center <%= !bank.isActive ? 'filter grayscale' : '' %>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                            </svg>
+                                        </div>
+                                        <% if (!bank.isActive) { %>
+                                            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                                <span class="text-white font-bold text-lg bg-red-500 px-3 py-1 rounded-full">
+                                                    <%= language === 'ar' ? 'غير متوفر' : 'Unavailable' %>
+                                                </span>
+                                            </div>
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                            </a>
+                        </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div id="noResults" class="text-center text-gray-600 dark:text-gray-400 py-8">
+                            <%= noResults %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </main>
+        
+        <%- include('../../partials/footer') %>
+    </div>
+<script>
+    // Toggle dark mode
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Check for saved theme preference
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Toggle sidebar on mobile
+    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+    const sidebar = document.getElementById('sidebar');
+    toggleSidebarBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+      sidebar.classList.toggle('translate-x-0');
+    });
+
+    // Toggle language dropdown
+    const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+    const languageDropdown = document.getElementById('language-dropdown');
+    languageDropdownBtn.addEventListener('click', () => {
+      languageDropdown.classList.toggle('hidden');
+    });
+    
+    // User menu toggle
+    const userMenuBtn = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    userMenuBtn.addEventListener('click', () => {
+      userMenu.classList.toggle('hidden');
+    });
+    
+    // Close user menu when clicking outside
+    document.addEventListener('click', (event) => {
+      if (!userMenuBtn.contains(event.target) && !userMenu.contains(event.target)) {
+        userMenu.classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            // Fetch user profile information
+            const response = await fetch('/app/profile');
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch user profile');
+            }
+
+            const userData = await response.json();
+
+            // Update user menu details
+            const userNameElement = document.querySelector('#user-menu .text-sm.font-medium');
+            const userEmailElement = document.querySelector('#user-menu .text-xs.text-gray-500');
+            const sidebarNameElement = document.querySelector('#user-profile p.font-medium');
+            const sidebarRoleElement = document.querySelector('#user-profile p.text-xs');
+
+            if (userNameElement) {
+                userNameElement.textContent = userData.firstName 
+                    ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                    : 'User';
+            }
+
+            if (userEmailElement) {
+                userEmailElement.textContent = userData.email || 'user@example.com';
+            }
+
+            if (sidebarNameElement) {
+                sidebarNameElement.textContent = userData.firstName 
+                    ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                    : 'User';
+            }
+
+            if (sidebarRoleElement) {
+                sidebarRoleElement.textContent = userData.role || 'Account';
+            }
+
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+            // Optionally, show a user-friendly error message
+        }
+
+        // User menu toggle functionality
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+
+        userMenuButton.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+
+        // Toggle dropdown visibility
+        userMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event from bubbling
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenu.classList.contains('hidden') && 
+                !userMenu.contains(e.target) && 
+                e.target !== userMenuButton) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+<script src="/static/js/profile.js"></script>
+<script src="/static/js/language.js"></script>
+<script src="/static/js/nav.js"></script>
+<script src="/static/js/notification-bell.js"></script>
+</body>
+</html>

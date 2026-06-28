@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Meso Card</title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                primary: {
+                  DEFAULT: '#3B82F6',
+                  '50': '#EBF2FF',
+                  '100': '#D6E4FF',
+                  '200': '#ADCAFD',
+                  '300': '#85B0FC',
+                  '400': '#5C96FB',
+                  '500': '#3B82F6',
+                  '600': '#0B61EF',
+                  '700': '#084BBD',
+                  '800': '#06368A',
+                  '900': '#042158'
+                },
+              }
+            }
+          }
+        }
+    </script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg relative">
+        <div class="absolute top-4 left-4">
+            <a href="/" class="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+        </div>
+        <div class="absolute top-4 right-4">
+            <button id="theme-toggle" class="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 00-1-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                Meso<span class="text-primary-400 dark:text-primary-300">Card</span>
+            </h1>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400"><%= description %></p>
+        </div>
+        <form id="login-form" class="space-y-6">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= email.label %></label>
+                <input type="email" id="email" name="email" required 
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100"
+                    placeholder="<%= email.placeholder %>">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= password.label %></label>
+                <input type="password" id="password" name="password" required 
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100"
+                    placeholder="<%= password.placeholder %>">
+            </div>
+            <div>
+                <button type="submit" 
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
+                    bg-primary-600 hover:bg-primary-700 
+                    dark:bg-primary-900 dark:hover:bg-primary-800 
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <%= loginButton %>
+                </button>
+            </div>
+            <div class="text-center">
+                <a href="/forgot-password" class="text-sm font-medium text-primary-600 hover:text-primary-500">
+                    <%= forgotPasswordButton %>
+                </a>
+            </div>
+            <div class="text-center">
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    <%= question %> 
+                    <a href="/register" class="font-medium text-primary-600 hover:text-primary-500">
+                        <%= registerButton %>
+                    </a>
+                </p>
+            </div>
+        </form>
+        <div class="social-login mt-4 space-y-3">
+            <a href="/auth/google" class="btn btn-google flex justify-center items-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+                bg-white dark:bg-gray-800 
+                text-gray-700 dark:text-gray-200 
+                hover:bg-gray-50 dark:hover:bg-gray-700 
+                hover:border-gray-400 dark:hover:border-gray-500 
+                transition duration-300 ease-in-out 
+                space-x-2 <%= language === 'ar' ? 'space-x-reverse' : '' %>">
+                <i class="fab fa-google text-lg text-red-500 dark:text-red-400"></i>
+                <span><%= googleSigninButton %></span>
+            </a>
+            <a href="#" class="btn btn-facebook flex justify-center items-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+                bg-white dark:bg-gray-800 
+                text-gray-700 dark:text-gray-200 
+                hover:bg-gray-50 dark:hover:bg-gray-700 
+                hover:border-gray-400 dark:hover:border-gray-500 
+                transition duration-300 ease-in-out 
+                space-x-2 <%= language === 'ar' ? 'space-x-reverse' : '' %>">
+                <i class="fab fa-facebook-f text-lg text-blue-600 dark:text-blue-500"></i>
+                <span><%= facebookSigninButton %></span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Unique error message container -->
+    <div id="form-error-container" class="fixed top-4 left-0 right-0 flex justify-center items-center z-50">
+        <div id="form-error-message" class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-lg text-sm text-center 
+            opacity-0 transition-all duration-300 ease-in-out transform -translate-y-full 
+            min-w-[300px] max-w-[500px]">
+            <!-- Error message will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Success popup -->
+    <div id="success-popup" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 hidden">
+        <div id="success-popup-content" class="bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center justify-between">
+            <span id="success-popup-message" class="mr-4"></span>
+        </div>
+    </div>
+
+    <script src="/static/js/theme.js"></script>
+    <script src="/static/js/login.js"></script>
+</body>
+</html>

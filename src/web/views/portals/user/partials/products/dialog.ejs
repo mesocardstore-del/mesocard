@@ -1,0 +1,87 @@
+<!-- Dynamic Dialog Box -->
+<div id="dynamicDialog" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="dialog-title" role="dialog" aria-modal="true">
+    <div class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+      <!-- Background overlay -->
+      <div id="dialogBackdrop" class="fixed inset-0 bg-gray-500 dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+      <!-- Modal panel -->
+      <span class="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true">&#8203;</span>
+      
+      <div class="inline-block animate__animated animate__fadeIn transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 <%= language === 'ar' ? 'text-right' : 'text-left' %> align-middle shadow-xl transition-all w-full max-w-[26rem] my-8">
+        <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mt-4 <%= language === 'ar' ? 'text-right' : 'text-left' %> w-full">
+              <div class="flex justify-between items-start mx-3">
+                <!-- make this name align with prices -->
+                <div class="flex items-start gap-2">
+                  <div class="text-md font-medium leading-6 text-gray-900 dark:text-white" id="dialog-title"></div>
+                  <div class="flex items-start gap-1">
+                    <svg id="isFavorite" data-favorited="false" data-product-id="" class="w-6 h-6 cursor-pointer text-gray-400 dark:text-gray-500 hover:bg-gray-500/20 dark:hover:bg-gray-700/30 rounded-full transition-colors duration-200 p-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="m12.75 20.66 6.184-7.098c2.677-2.884 2.559-6.506.754-8.705-.898-1.095-2.206-1.816-3.72-1.855-1.293-.034-2.652.43-3.963 1.442-1.315-1.012-2.678-1.476-3.973-1.442-1.515.04-2.825.76-3.724 1.855-1.806 2.201-1.915 5.823.772 8.706l6.183 7.097c.19.216.46.34.743.34a.985.985 0 0 0 .743-.34Z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="flex flex-col items-start">
+                  <p id="dialog-price" class="rounded-3xl bg-gradient-to-r from-cyan-500 to-cyan-900 px-3 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 text-sm"></p>
+                  <p id="dialog-price_jod" class="mx-2 text-sm font-medium text-yellow-500"></p>
+                </div>
+              </div>
+              <div class="items-start mt-2">
+                  <!-- Form will be inserted here if dialogHasForm is true -->
+                  <form id="dynamicDialogForm" class="mt-4 hidden">
+                      <div class="grid grid-cols-12 gap-4 my-5 items-start">
+                          <input type="hidden" id="buyNow" value="0">
+                          <div id="dialog-units-container" class="relative w-full col-span-6">
+                              <input 
+                                  type="number" 
+                                  id="dialog-units" 
+                                  name="units" 
+                                  min="1" 
+                                  step="1"
+                                  oninvalid=''
+                                  required
+                                  class="block px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-3xl border border-gray-300 dark:border-gray-600 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 dark:focus:border-blue-500 peer <%= language === 'ar' ? 'text-right' : 'text-left' %>" 
+                                  placeholder=" " 
+                                  autocomplete="off"
+                              />
+                              <label for="dialog-units" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4 <%= language === 'ar' ? 'right-2.5 peer-focus:right-2.5' : 'left-2.5 peer-focus:left-2.5' %>">
+                                  <%= language === 'ar' ? 'العدد' : 'Amount' %>
+                              </label>
+                          </div>
+                          <div class="relative w-full col-span-6">
+                              <input type="text" id="dialog-total-price" name="price" class="block px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-3xl border border-gray-300 dark:border-gray-600 appearance-none focus:outline-none focus:ring-0 focus:border-gray-300 dark:focus:border-gray-600 peer pointer-events-none select-none <%= language === 'ar' ? 'text-right' : 'text-left' %>" placeholder=" " autocomplete="off" readonly tabindex="-1" />
+                              <label for="dialog-total-price" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-4 <%= language === 'ar' ? 'right-2.5 peer-focus:right-2.5' : 'left-2.5 peer-focus:left-2.5' %>">
+                                  <%= language === 'ar' ? 'الاجمالي' : 'Total' %>
+                              </label>
+                          </div>
+                      </div>
+                      <div id="dialog-form-fields" class="grid grid-cols-12 gap-4">
+                          <!-- Dynamic form fields will be inserted here -->
+                      </div>
+                      <div class="mt-5 grid grid-cols-12 gap-3">                       
+                          <div class="col-span-1 flex items-center">
+                            <button id="addToCartBtn" type="submit" class="p-2 rounded-full transition-all duration-200 hover:bg-green-100 dark:hover:bg-green-900/30 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                              <svg class="w-8 h-8 text-gray-500 dark:text-gray-400 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 104.42" fill="currentColor">
+                                <title>add-to-cart</title>
+                                <path d="M3.66,10.84a3.71,3.71,0,0,1,0-7.42H9.11A17.25,17.25,0,0,1,18,5.77c4.92,3.11,5.79,7.56,7.05,12.59H66.73a31.57,31.57,0,0,0-.91,7.33H27.15l8.37,31.47H94.81l0-.18c.72.05,1.44.08,2.17.08a31.59,31.59,0,0,0,5.46-.48l-1.29,5.19a3.6,3.6,0,0,1-3.57,2.81H37.49c1.31,4.88,2.63,7.51,4.42,8.73,2.16,1.41,5.92,1.51,12.21,1.41H96.68a3.67,3.67,0,1,1,0,7.33H54.21c-7.79.1-12.59-.09-16.44-2.63s-6-7.14-8.08-15.31h0L17.1,16.48c0-.1,0-.1-.09-.19a6.58,6.58,0,0,0-2.82-4.23A9.64,9.64,0,0,0,9,10.84H3.66ZM97,0A25.85,25.85,0,1,1,78.74,7.57,25.83,25.83,0,0,1,97,0Zm11.43,23.91V27.8a1.67,1.67,0,0,1-1.67,1.67h-6.14v6.14A1.68,1.68,0,0,1,99,37.29H95.08a1.68,1.68,0,0,1-1.67-1.68V29.47H87.27a1.68,1.68,0,0,1-1.68-1.67V23.91a1.68,1.68,0,0,1,1.68-1.67h6.14V16.1a1.68,1.68,0,0,1,1.67-1.68H99a1.68,1.68,0,0,1,1.67,1.68v6.14h6.14a1.68,1.68,0,0,1,1.67,1.67Zm3.72-13.2a21.43,21.43,0,1,0,6.27,15.15,21.38,21.38,0,0,0-6.27-15.15ZM60.9,33.43a2.61,2.61,0,0,1,5.11,0V47.6a2.6,2.6,0,0,1-5.11,0V33.43Zm-15.31,0a2.61,2.61,0,0,1,5.11,0V47.6a2.6,2.6,0,0,1-5.11,0V33.43Zm40.1,53a9,9,0,1,1-9,9,9,9,0,0,1,9-9Zm-39.56,0a9,9,0,1,1-9,9,9,9,0,0,1,9-9Z"/>
+                              </svg>
+                            </button>
+                          </div>
+                          <div class="col-span-1"></div> <!-- Spacer column -->
+                          <button type="submit" id="buyNowBtn" class="col-span-5 inline-flex justify-center items-center rounded-3xl bg-gradient-to-r from-cyan-500 to-cyan-900 px-4 py-3.5 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                              <%= language === 'ar' ? 'شراء الآن' : 'Buy Now' %>
+                          </button>
+                          <button type="button" id="dialog-cancel" class="col-span-5 inline-flex justify-center items-center rounded-3xl border border-red-700 dark:border-red-500 px-4 py-3.5 text-base font-medium text-red-700 dark:text-red-500 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                              <%= language === 'ar' ? 'إلغاء' : 'Cancel' %>
+                          </button>
+                      </div>
+                  </form>
+              </div>
+              <span class="mt-4 sm:inline-block" aria-hidden="true">&#8203;</span>
+              <textarea id="dialog-description" rows="7" class="resize-none text-md w-full overflow-y-auto bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-md p-2" readonly disabled></textarea>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

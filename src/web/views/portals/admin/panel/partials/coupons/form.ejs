@@ -1,0 +1,153 @@
+<div class="w-full max-w-4xl">
+    <!-- Form content card -->
+    <div class="relative bg-white rounded-lg shadow-lg dark:bg-gray-800">
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                <%= couponManage.title %>
+            </h3>
+        </div>
+        <!-- Body -->
+        <div class="p-4 md:p-5 space-y-6">
+            <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
+                <li id="step-indicator-1" class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
+                    <span class="step-label flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
+                        1
+                    </span>
+                    <span>
+                        <h3 class="font-medium leading-tight"><%= couponManage.stepper.one.details %></h3>
+                        <p class="text-sm"><%= couponManage.stepper.one.assignProducts %></p>
+                    </span>
+                </li>
+                <li id="step-indicator-2" class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                    <span class="step-label flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                        2
+                    </span>
+                    <span>
+                        <h3 class="font-medium leading-tight"><%= couponManage.stepper.two.details %></h3>
+                        <p class="text-sm"><%= couponManage.stepper.two.link %></p>
+                    </span>
+                </li>
+            </ol>
+
+            <!-- Step 1: Add/View Coupons -->
+            <div id="step-1" class="space-y-6 pt-6">
+                <!-- Add New Coupon Form -->
+                <div>
+                    <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-4"><%= couponManage.stepper.one.addCoupon %></h4>
+                    <form class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="coupon_code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"><%= couponManage.stepper.one.couponCode %></label>
+                                <input type="text" name="coupon_code" id="coupon_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="<%= couponManage.stepper.one.couponCodePlaceholder %>" required>
+                            </div>
+                            <div>
+                                <label for="discount_value" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"><%= couponManage.stepper.one.discountValue %></label>
+                                <input type="text" name="discount_value" id="discount_value" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="<%= couponManage.stepper.one.discountValuePlaceholder %>" required>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="expiration_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"><%= couponManage.stepper.one.expirationDate %></label>
+                                <input type="date" name="expiration_date" id="expiration_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required>
+                            </div>
+                            <div>
+                                <label for="usage_limit" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"><%= couponManage.stepper.one.usageLimit %></label>
+                                <input type="number" name="usage_limit" id="usage_limit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="<%= couponManage.stepper.one.usageLimitPlaceholder %>" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <hr class="border-gray-200 dark:border-gray-700">
+                <!-- Active Coupons Table -->
+                 <div>
+                    <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-4"><%= couponManage.stepper.one.couponTable.activeCoupons %></h4>
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3"><%= couponManage.stepper.one.couponTable.couponCode %></th>
+                                    <th scope="col" class="px-6 py-3"><%= couponManage.stepper.one.couponTable.discount %></th>
+                                    <th scope="col" class="px-6 py-3"><%= couponManage.stepper.one.couponTable.expirationDate %></th>
+                                    <th scope="col" class="px-6 py-3"><%= couponManage.stepper.one.couponTable.actions %></th>
+                                </tr>
+                            </thead>
+                            <tbody id="coupons-table-body">
+                                <tr id="coupon-loading-row" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td colspan="5" class="px-6 py-4 text-center">
+                                        <div role="status" class="flex justify-center items-center">
+                                            <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                                            </svg>
+                                            <span class="sr-only"><%= couponManage.stepper.one.couponTable.loading %></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Assign Products -->
+            <div id="step-2" class="hidden pt-6">
+                <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-4"><%= couponManage.stepper.two.assignProducts %></h4>
+                
+                <!-- Search Input -->
+                <div class="relative mb-4 max-w-4xl">
+                    <div class="flex items-center gap-4">
+                        <div class="relative flex-1">
+                            <input type="text" 
+                                   id="product-search" 
+                                   class="w-full p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                   placeholder="<%= couponManage.stepper.two.searchPlaceholder %>"
+                                   autocomplete="off">
+                            <div id="search-results" 
+                                 class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg dark:bg-gray-700 dark:border-gray-600 max-h-48 overflow-y-auto">
+                                <!-- Results will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <button type="button" onclick="handleProductsDelete()" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center whitespace-nowrap">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                </svg>
+                                <span><%= couponManage.stepper.two.buttons.delete %></span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-all-products" onclick="checkAllProducts(this.checked)" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-all-products" class="sr-only">checkbox</label>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3"><%= couponManage.stepper.two.table.productName %></th>
+                                <th scope="col" class="px-6 py-3"><%= couponManage.stepper.two.table.category %></th>
+                                <th scope="col" class="px-6 py-3"><%= couponManage.stepper.two.table.price %></th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div id="footer-step-1" class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-700">
+            <button id="next-btn" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ms-3"><%= couponManage.stepper.stepButtons.next %></button>
+        </div>
+        <div id="footer-step-2" class="hidden flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-700">
+            <button id="back-btn" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"><%= couponManage.stepper.stepButtons.back %></button>
+            <button id="submit-btn" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ms-3"><%= couponManage.stepper.stepButtons.save %></button>
+        </div>
+    </div>
+</div>

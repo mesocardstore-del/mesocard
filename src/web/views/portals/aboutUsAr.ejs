@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meso Card - من نحن</title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="/static/styles/animate.min.css">
+    <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                primary: {
+                  DEFAULT: '#3B82F6',
+                  '50': '#EBF2FF',
+                  '100': '#D6E4FF',
+                  '200': '#ADCAFD',
+                  '300': '#85B0FC',
+                  '400': '#5C96FB',
+                  '500': '#3B82F6',
+                  '600': '#0B61EF',
+                  '700': '#084BBD',
+                  '800': '#06368A',
+                  '900': '#042158'
+                },
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navbar -->
+        <%- include('../partials/user/navbar') %>
+        
+        <!-- Sidebar and Main Content -->
+        <div class="flex flex-column pt-12">
+            <!-- Sidebar -->
+            <%- include('../partials/user/sidebar') %>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 items-center justify-center p-4 md:p-6 md:<%= language === 'ar' ? 'mr-64' : 'ml-64' %>">
+            <!-- Header -->
+            <header class="bg-gray-100 dark:bg-gray-800 shadow-md py-4">
+                <div class="container mx-auto px-4 flex justify-between items-center">
+                    <h1 class="text-xl font-bold dark:text-white">MesoCard.com</h1>
+                    <span class="text-sm dark:text-white">حلول رقمية موثوقة</span>
+                </div>
+            </header>
+
+            <!-- Aboutus text -->
+            <div class="flex-1 items-center justify-center mt-8 mb-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl 3xl:max-w-6xl 4xl:max-w-7xl mx-auto">
+                <div class="flex-grow container mx-auto px-4 py-10 space-y-12">
+                    <!-- Welcome -->
+                    <section class="dark:text-white">
+                        <h2 class="text-2xl font-semibold mb-4">👋 أهلاً بك في MesoCard.com</h2>
+                        <p class="leading-relaxed">
+                            في MesoCard.com، نسعى لتقديم تجربة سلسة وموثوقة لكل من يبحث عن حلول رقمية حديثة. قمنا ببناء منصة متطورة تتيح لك الوصول إلى بطاقات الألعاب، والاشتراكات الترفيهية، وغيرها من الخدمات الرقمية بكل سهولة، وأمان، وسرعة فائقة.
+                        </p>
+                    </section>
+            
+                    <!-- Vision and Mission -->
+                    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 dark:text-white">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">🌍 رؤيتنا</h3>
+                            <p>
+                                أن نصبح المرجع الأول في المنطقة العربية في تقديم خدمات رقمية موثوقة تلبي احتياجات المستخدمين الأفراد والمؤسسات باحترافية وجودة عالية.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">🎯 مهمتنا</h3>
+                            <p>
+                                نحرص على جعل الوصول إلى العالم الرقمي أكثر سهولة وراحة للمستخدم العربي، من خلال منصة آمنة، دعم فني دائم، وتجربة شراء مميزة وسريعة.
+                            </p>
+                        </div>
+                    </section>
+                    
+                    <!-- Features -->
+                    <section class="dark:text-white">
+                        <h3 class="text-xl font-semibold mb-4">💡 ما الذي يميز MesoCard.com؟</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>⚡ توصيل فوري دون تأخير، متاح على مدار الساعة</li>
+                            <li>🔐 حماية تامة لبياناتك ومعاملاتك</li>
+                            <li>📞 فريق دعم متجاوب دائماً لحل أي مشكلة</li>
+                            <li>💳 وسائل دفع مرنة ومتعددة تناسب جميع المستخدمين</li>
+                            <li>🛒 تنوّع واسع من البطاقات الرقمية المحلية والعالمية</li>
+                        </ul>
+                    </section>
+            
+                    <!-- Contact -->
+                    <section class="dark:text-white">
+                        <h3 class="text-xl font-semibold mb-2">📬 تواصل معنا</h3>
+                        <p>
+                            هل لديك استفسار؟ نحن هنا دائماً للإجابة. تواصل معنا عبر البريد الإلكتروني أو من خلال حساباتنا على شبكات التواصل الاجتماعي.
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </main>
+        
+        <%- include('../partials/footer') %>
+    </div>
+<script>
+    // Toggle dark mode
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    themeToggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Check for saved theme preference
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Toggle sidebar on mobile
+    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+    const sidebar = document.getElementById('sidebar');
+    toggleSidebarBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+      sidebar.classList.toggle('translate-x-0');
+    });
+
+    // Toggle language dropdown
+    const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+    const languageDropdown = document.getElementById('language-dropdown');
+    languageDropdownBtn.addEventListener('click', () => {
+      languageDropdown.classList.toggle('hidden');
+    });
+    
+    // User menu toggle
+    const userMenuBtn = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    userMenuBtn.addEventListener('click', () => {
+      userMenu.classList.toggle('hidden');
+    });
+    
+    // Close user menu when clicking outside
+    document.addEventListener('click', (event) => {
+      if (!userMenuBtn.contains(event.target) && !userMenu.contains(event.target)) {
+        userMenu.classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            // Fetch user profile information
+            const response = await fetch('/app/profile');
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch user profile');
+            }
+
+            const userData = await response.json();
+
+            // Update user menu details
+            const userNameElement = document.querySelector('#user-menu .text-sm.font-medium');
+            const userEmailElement = document.querySelector('#user-menu .text-xs.text-gray-500');
+            const sidebarNameElement = document.querySelector('#user-profile p.font-medium');
+            const sidebarRoleElement = document.querySelector('#user-profile p.text-xs');
+
+            if (userNameElement) {
+                userNameElement.textContent = userData.firstName 
+                    ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                    : 'User';
+            }
+
+            if (userEmailElement) {
+                userEmailElement.textContent = userData.email || 'user@example.com';
+            }
+
+            if (sidebarNameElement) {
+                sidebarNameElement.textContent = userData.firstName 
+                    ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                    : 'User';
+            }
+
+            if (sidebarRoleElement) {
+                sidebarRoleElement.textContent = userData.role || 'Account';
+            }
+
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+            // Optionally, show a user-friendly error message
+        }
+
+        // User menu toggle functionality
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+
+        userMenuButton.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+
+        // Toggle dropdown visibility
+        userMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event from bubbling
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenu.classList.contains('hidden') && 
+                !userMenu.contains(e.target) && 
+                e.target !== userMenuButton) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+<script src="/static/js/profile.js"></script>
+<script src="/static/js/language.js"></script>
+<script src="/static/js/nav.js"></script>
+<script src="/static/js/notification-bell.js"></script>
+</body>
+</html>

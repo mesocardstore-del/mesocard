@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Meso Card</title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                primary: {
+                  DEFAULT: '#3B82F6',
+                  '50': '#EBF2FF',
+                  '100': '#D6E4FF',
+                  '200': '#ADCAFD',
+                  '300': '#85B0FC',
+                  '400': '#5C96FB',
+                  '500': '#3B82F6',
+                  '600': '#0B61EF',
+                  '700': '#084BBD',
+                  '800': '#06368A',
+                  '900': '#042158'
+                },
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg relative mt-20 mb-20">
+        
+        <div class="absolute top-4 left-4">
+            <a href="/" class="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+        </div>
+        <div class="absolute top-4 right-4">
+            <button id="theme-toggle" class="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 00-1-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Unique error message container -->
+        <div id="form-error-container" class="fixed top-4 left-0 right-0 flex justify-center items-center z-50">
+            <div id="form-error-message" class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-lg text-sm text-center 
+                opacity-0 transition-all duration-300 ease-in-out transform -translate-y-full 
+                min-w-[300px] max-w-[500px]">
+                <!-- Error message will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div id="error-popup" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 hidden">
+            <div id="error-popup-content" class="bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center justify-between">
+                <span id="error-popup-message" class="mr-4"></span>
+                <button id="error-popup-close" class="text-white hover:text-red-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="success-popup" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 hidden">
+            <div id="success-popup-content" class="bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center justify-between">
+                <span id="success-popup-message" class="mr-4"></span>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                Meso<span class="text-primary-400 dark:text-primary-300">Card</span>
+            </h1>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400"><%= description %></p>
+        </div>
+        <form id="register-form" class="space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="firstname" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= firstname.label %></label>
+                    <input type="text" id="firstname" name="firstname" required 
+                        class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100"
+                        pattern="[A-Za-z][A-Za-z' \-]{1,29}"
+                        placeholder="<%= firstname.placeholder %>"
+                        oninvalid="this.setCustomValidity('<%= firstname.patternMessage %>')"
+                        oninput="this.setCustomValidity('')">
+                </div>
+                <div>
+                    <label for="lastname" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= lastname.label %></label>
+                    <input type="text" id="lastname" name="lastname" required 
+                        class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100"
+                        pattern="[A-Za-z][A-Za-z' \-]{1,29}"
+                        placeholder="<%= lastname.placeholder %>"
+                        oninvalid="this.setCustomValidity('<%= lastname.patternMessage %>')"
+                        oninput="this.setCustomValidity('')">
+                </div>
+            </div>
+            <div>
+                <!-- All countries -->
+                <!-- Calling Code and Name -->
+                <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= country.label %></label>
+                <select id="country" name="country" required 
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100">
+                    <option value="" data-countryCode=""><%= country.placeholder %></option>
+                    <option value="93" data-countryCode="AFG">Afghanistan</option>
+                    <option value="358" data-countryCode="ALA">Åland Islands</option>
+                    <option value="355" data-countryCode="ALB">Albania</option>
+                    <option value="213" data-countryCode="DZA">Algeria</option>
+                    <option value="1" data-countryCode="ASM">American Samoa</option>
+                    <option value="376" data-countryCode="AND">Andorra</option>
+                    <option value="244" data-countryCode="AGO">Angola</option>
+                    <option value="1" data-countryCode="AIA">Anguilla</option>
+                    <option value="672" data-countryCode="ATA">Antarctica</option>
+                    <option value="1" data-countryCode="ATG">Antigua and Barbuda</option>
+                    <option value="54" data-countryCode="ARG">Argentina</option>
+                    <option value="374" data-countryCode="ARM">Armenia</option>
+                    <option value="297" data-countryCode="ABW">Aruba</option>
+                    <option value="61" data-countryCode="AUS">Australia</option>
+                    <option value="43" data-countryCode="AUT">Austria</option>
+                    <option value="994" data-countryCode="AZE">Azerbaijan</option>
+                    <option value="1" data-countryCode="BHS">Bahamas</option>
+                    <option value="973" data-countryCode="BHR">Bahrain</option>
+                    <option value="880" data-countryCode="BGD">Bangladesh</option>
+                    <option value="1" data-countryCode="BRB">Barbados</option>
+                    <option value="375" data-countryCode="BLR">Belarus</option>
+                    <option value="32" data-countryCode="BEL">Belgium</option>
+                    <option value="501" data-countryCode="BLZ">Belize</option>
+                    <option value="229" data-countryCode="BEN">Benin</option>
+                    <option value="1" data-countryCode="BMU">Bermuda</option>
+                    <option value="975" data-countryCode="BTN">Bhutan</option>
+                    <option value="591" data-countryCode="BOL">Bolivia (Plurinational State of)</option>
+                    <option value="387" data-countryCode="BIH">Bosnia and Herzegovina</option>
+                    <option value="267" data-countryCode="BWA">Botswana</option>
+                    <option value="55" data-countryCode="BVT">Bouvet Island</option>
+                    <option value="55" data-countryCode="BRA">Brazil</option>
+                    <option value="246" data-countryCode="IOT">British Indian Ocean Territory</option>
+                    <option value="673" data-countryCode="BRN">Brunei Darussalam</option>
+                    <option value="359" data-countryCode="BGR">Bulgaria</option>
+                    <option value="226" data-countryCode="BFA">Burkina Faso</option>
+                    <option value="257" data-countryCode="BDI">Burundi</option>
+                    <option value="238" data-countryCode="CPV">Cabo Verde</option>
+                    <option value="855" data-countryCode="KHM">Cambodia</option>
+                    <option value="237" data-countryCode="CMR">Cameroon</option>
+                    <option value="1" data-countryCode="CAN">Canada</option>
+                    <option value="599" data-countryCode="BES">Caribbean Netherlands</option>
+                    <option value="1" data-countryCode="CYM">Cayman Islands</option>
+                    <option value="236" data-countryCode="CAF">Central African Republic</option>
+                    <option value="235" data-countryCode="TCD">Chad</option>
+                    <option value="56" data-countryCode="CHL">Chile</option>
+                    <option value="86" data-countryCode="CHN">China</option>
+                    <option value="61" data-countryCode="CXR">Christmas Island</option>
+                    <option value="61" data-countryCode="CCK">Cocos (Keeling) Islands</option>
+                    <option value="57" data-countryCode="COL">Colombia</option>
+                    <option value="269" data-countryCode="COM">Comoros</option>
+                    <option value="242" data-countryCode="COG">Congo</option>
+                    <option value="243" data-countryCode="COD">Congo, Democratic Republic of the</option>
+                    <option value="682" data-countryCode="COK">Cook Islands</option>
+                    <option value="506" data-countryCode="CRI">Costa Rica</option>
+                    <option value="385" data-countryCode="HRV">Croatia</option>
+                    <option value="53" data-countryCode="CUB">Cuba</option>
+                    <option value="599" data-countryCode="CUW">Curaçao</option>
+                    <option value="357" data-countryCode="CYP">Cyprus</option>
+                    <option value="420" data-countryCode="CZE">Czech Republic</option>
+                    <option value="225" data-countryCode="CIV">Côte d'Ivoire</option>
+                    <option value="45" data-countryCode="DNK">Denmark</option>
+                    <option value="253" data-countryCode="DJI">Djibouti</option>
+                    <option value="1" data-countryCode="DMA">Dominica</option>
+                    <option value="1" data-countryCode="DOM">Dominican Republic</option>
+                    <option value="593" data-countryCode="ECU">Ecuador</option>
+                    <option value="20" data-countryCode="EGY">Egypt</option>
+                    <option value="503" data-countryCode="SLV">El Salvador</option>
+                    <option value="240" data-countryCode="GNQ">Equatorial Guinea</option>
+                    <option value="291" data-countryCode="ERI">Eritrea</option>
+                    <option value="372" data-countryCode="EST">Estonia</option>
+                    <option value="268" data-countryCode="SWZ">Eswatini (Swaziland)</option>
+                    <option value="251" data-countryCode="ETH">Ethiopia</option>
+                    <option value="500" data-countryCode="FLK">Falkland Islands (Malvinas)</option>
+                    <option value="298" data-countryCode="FRO">Faroe Islands</option>
+                    <option value="679" data-countryCode="FJI">Fiji</option>
+                    <option value="358" data-countryCode="FIN">Finland</option>
+                    <option value="33" data-countryCode="FRA">France</option>
+                    <option value="594" data-countryCode="GUF">French Guiana</option>
+                    <option value="689" data-countryCode="PYF">French Polynesia</option>
+                    <option value="262" data-countryCode="ATF">French Southern Territories</option>
+                    <option value="241" data-countryCode="GAB">Gabon</option>
+                    <option value="220" data-countryCode="GMB">Gambia</option>
+                    <option value="995" data-countryCode="GEO">Georgia</option>
+                    <option value="49" data-countryCode="DEU">Germany</option>
+                    <option value="233" data-countryCode="GHA">Ghana</option>
+                    <option value="350" data-countryCode="GIB">Gibraltar</option>
+                    <option value="30" data-countryCode="GRC">Greece</option>
+                    <option value="299" data-countryCode="GRL">Greenland</option>
+                    <option value="1" data-countryCode="GRD">Grenada</option>
+                    <option value="590" data-countryCode="GLP">Guadeloupe</option>
+                    <option value="1" data-countryCode="GUM">Guam</option>
+                    <option value="502" data-countryCode="GTM">Guatemala</option>
+                    <option value="44" data-countryCode="GGY">Guernsey</option>
+                    <option value="224" data-countryCode="GIN">Guinea</option>
+                    <option value="245" data-countryCode="GNB">Guinea-Bissau</option>
+                    <option value="592" data-countryCode="GUY">Guyana</option>
+                    <option value="509" data-countryCode="HTI">Haiti</option>
+                    <option value="61" data-countryCode="HMD">Heard Island and Mcdonald Islands</option>
+                    <option value="504" data-countryCode="HND">Honduras</option>
+                    <option value="852" data-countryCode="HKG">Hong Kong</option>
+                    <option value="36" data-countryCode="HUN">Hungary</option>
+                    <option value="354" data-countryCode="ISL">Iceland</option>
+                    <option value="91" data-countryCode="IND">India</option>
+                    <option value="62" data-countryCode="IDN">Indonesia</option>
+                    <option value="98" data-countryCode="IRN">Iran</option>
+                    <option value="964" data-countryCode="IRQ">Iraq</option>
+                    <option value="353" data-countryCode="IRL">Ireland</option>
+                    <option value="44" data-countryCode="IMN">Isle of Man</option>
+                    <option value="972" data-countryCode="ISR">Israel</option>
+                    <option value="39" data-countryCode="ITA">Italy</option>
+                    <option value="1" data-countryCode="JAM">Jamaica</option>
+                    <option value="81" data-countryCode="JPN">Japan</option>
+                    <option value="44" data-countryCode="JEY">Jersey</option>
+                    <option value="962" data-countryCode="JOR">Jordan</option>
+                    <option value="7" data-countryCode="KAZ">Kazakhstan</option>
+                    <option value="254" data-countryCode="KEN">Kenya</option>
+                    <option value="686" data-countryCode="KIR">Kiribati</option>
+                    <option value="850" data-countryCode="PRK">Korea, North</option>
+                    <option value="82" data-countryCode="KOR">Korea, South</option>
+                    <option value="383" data-countryCode="XKX">Kosovo</option>
+                    <option value="965" data-countryCode="KWT">Kuwait</option>
+                    <option value="996" data-countryCode="KGZ">Kyrgyzstan</option>
+                    <option value="856" data-countryCode="LAO">Lao People's Democratic Republic</option>
+                    <option value="371" data-countryCode="LVA">Latvia</option>
+                    <option value="961" data-countryCode="LBN">Lebanon</option>
+                    <option value="266" data-countryCode="LSO">Lesotho</option>
+                    <option value="231" data-countryCode="LBR">Liberia</option>
+                    <option value="218" data-countryCode="LBY">Libya</option>
+                    <option value="423" data-countryCode="LIE">Liechtenstein</option>
+                    <option value="370" data-countryCode="LTU">Lithuania</option>
+                    <option value="352" data-countryCode="LUX">Luxembourg</option>
+                    <option value="853" data-countryCode="MAC">Macao</option>
+                    <option value="389" data-countryCode="MKD">Macedonia North</option>
+                    <option value="261" data-countryCode="MDG">Madagascar</option>
+                    <option value="265" data-countryCode="MWI">Malawi</option>
+                    <option value="60" data-countryCode="MYS">Malaysia</option>
+                    <option value="960" data-countryCode="MDV">Maldives</option>
+                    <option value="223" data-countryCode="MLI">Mali</option>
+                    <option value="356" data-countryCode="MLT">Malta</option>
+                    <option value="692" data-countryCode="MHL">Marshall Islands</option>
+                    <option value="596" data-countryCode="MTQ">Martinique</option>
+                    <option value="222" data-countryCode="MRT">Mauritania</option>
+                    <option value="230" data-countryCode="MUS">Mauritius</option>
+                    <option value="262" data-countryCode="MYT">Mayotte</option>
+                    <option value="52" data-countryCode="MEX">Mexico</option>
+                    <option value="691" data-countryCode="FSM">Micronesia</option>
+                    <option value="373" data-countryCode="MDA">Moldova</option>
+                    <option value="377" data-countryCode="MCO">Monaco</option>
+                    <option value="976" data-countryCode="MNG">Mongolia</option>
+                    <option value="382" data-countryCode="MNE">Montenegro</option>
+                    <option value="1" data-countryCode="MSR">Montserrat</option>
+                    <option value="212" data-countryCode="MAR">Morocco</option>
+                    <option value="258" data-countryCode="MOZ">Mozambique</option>
+                    <option value="95" data-countryCode="MMR">Myanmar (Burma)</option>
+                    <option value="264" data-countryCode="NAM">Namibia</option>
+                    <option value="674" data-countryCode="NRU">Nauru</option>
+                    <option value="977" data-countryCode="NPL">Nepal</option>
+                    <option value="31" data-countryCode="NLD">Netherlands</option>
+                    <option value="599" data-countryCode="ANT">Netherlands Antilles</option>
+                    <option value="687" data-countryCode="NCL">New Caledonia</option>
+                    <option value="64" data-countryCode="NZL">New Zealand</option>
+                    <option value="505" data-countryCode="NIC">Nicaragua</option>
+                    <option value="227" data-countryCode="NER">Niger</option>
+                    <option value="234" data-countryCode="NGA">Nigeria</option>
+                    <option value="683" data-countryCode="NIU">Niue</option>
+                    <option value="672" data-countryCode="NFK">Norfolk Island</option>
+                    <option value="1" data-countryCode="MNP">Northern Mariana Islands</option>
+                    <option value="47" data-countryCode="NOR">Norway</option>
+                    <option value="968" data-countryCode="OMN">Oman</option>
+                    <option value="92" data-countryCode="PAK">Pakistan</option>
+                    <option value="680" data-countryCode="PLW">Palau</option>
+                    <option value="970" data-countryCode="PSE">Palestine</option>
+                    <option value="507" data-countryCode="PAN">Panama</option>
+                    <option value="675" data-countryCode="PNG">Papua New Guinea</option>
+                    <option value="595" data-countryCode="PRY">Paraguay</option>
+                    <option value="51" data-countryCode="PER">Peru</option>
+                    <option value="63" data-countryCode="PHL">Philippines</option>
+                    <option value="64" data-countryCode="PCN">Pitcairn Islands</option>
+                    <option value="48" data-countryCode="POL">Poland</option>
+                    <option value="351" data-countryCode="PRT">Portugal</option>
+                    <option value="1" data-countryCode="PRI">Puerto Rico</option>
+                    <option value="974" data-countryCode="QAT">Qatar</option>
+                    <option value="262" data-countryCode="REU">Reunion</option>
+                    <option value="40" data-countryCode="ROM">Romania</option>
+                    <option value="7" data-countryCode="RUS">Russian Federation</option>
+                    <option value="250" data-countryCode="RWA">Rwanda</option>
+                    <option value="590" data-countryCode="BLM">Saint Barthelemy</option>
+                    <option value="290" data-countryCode="SHN">Saint Helena</option>
+                    <option value="1" data-countryCode="KNA">Saint Kitts and Nevis</option>
+                    <option value="1" data-countryCode="LCA">Saint Lucia</option>
+                    <option value="590" data-countryCode="MAF">Saint Martin</option>
+                    <option value="508" data-countryCode="SPM">Saint Pierre and Miquelon</option>
+                    <option value="1" data-countryCode="VCT">Saint Vincent and the Grenadines</option>
+                    <option value="685" data-countryCode="WSM">Samoa</option>
+                    <option value="378" data-countryCode="SMR">San Marino</option>
+                    <option value="239" data-countryCode="STP">Sao Tome and Principe</option>
+                    <option value="966" data-countryCode="SAU">Saudi Arabia</option>
+                    <option value="221" data-countryCode="SEN">Senegal</option>
+                    <option value="381" data-countryCode="SRB">Serbia</option>
+                    <option value="381" data-countryCode="SCG">Serbia and Montenegro</option>
+                    <option value="248" data-countryCode="SYC">Seychelles</option>
+                    <option value="232" data-countryCode="SLE">Sierra Leone</option>
+                    <option value="65" data-countryCode="SGP">Singapore</option>
+                    <option value="1" data-countryCode="SXM">Sint Maarten</option>
+                    <option value="421" data-countryCode="SVK">Slovakia</option>
+                    <option value="386" data-countryCode="SVN">Slovenia</option>
+                    <option value="677" data-countryCode="SLB">Solomon Islands</option>
+                    <option value="252" data-countryCode="SOM">Somalia</option>
+                    <option value="27" data-countryCode="ZAF">South Africa</option>
+                    <option value="500" data-countryCode="SGS">South Georgia and the South Sandwich Islands</option>
+                    <option value="211" data-countryCode="SSD">South Sudan</option>
+                    <option value="34" data-countryCode="ESP">Spain</option>
+                    <option value="94" data-countryCode="LKA">Sri Lanka</option>
+                    <option value="249" data-countryCode="SDN">Sudan</option>
+                    <option value="597" data-countryCode="SUR">Suriname</option>
+                    <option value="47" data-countryCode="SJM">Svalbard and Jan Mayen</option>
+                    <option value="46" data-countryCode="SWE">Sweden</option>
+                    <option value="41" data-countryCode="CHE">Switzerland</option>
+                    <option value="963" data-countryCode="SYR">Syria</option>
+                    <option value="886" data-countryCode="TWN">Taiwan</option>
+                    <option value="992" data-countryCode="TJK">Tajikistan</option>
+                    <option value="255" data-countryCode="TZA">Tanzania</option>
+                    <option value="66" data-countryCode="THA">Thailand</option>
+                    <option value="670" data-countryCode="TLS">Timor-Leste</option>
+                    <option value="228" data-countryCode="TGO">Togo</option>
+                    <option value="690" data-countryCode="TKL">Tokelau</option>
+                    <option value="676" data-countryCode="TON">Tonga</option>
+                    <option value="1" data-countryCode="TTO">Trinidad and Tobago</option>
+                    <option value="216" data-countryCode="TUN">Tunisia</option>
+                    <option value="90" data-countryCode="TUR">Turkey (Türkiye)</option>
+                    <option value="993" data-countryCode="TKM">Turkmenistan</option>
+                    <option value="1" data-countryCode="TCA">Turks and Caicos Islands</option>
+                    <option value="688" data-countryCode="TUV">Tuvalu</option>
+                    <option value="1" data-countryCode="UMI">U.S. Outlying Islands</option>
+                    <option value="256" data-countryCode="UGA">Uganda</option>
+                    <option value="380" data-countryCode="UKR">Ukraine</option>
+                    <option value="971" data-countryCode="ARE">United Arab Emirates</option>
+                    <option value="44" data-countryCode="GBR">United Kingdom</option>
+                    <option value="1" data-countryCode="USA">United States</option>
+                    <option value="598" data-countryCode="URY">Uruguay</option>
+                    <option value="998" data-countryCode="UZB">Uzbekistan</option>
+                    <option value="678" data-countryCode="VUT">Vanuatu</option>
+                    <option value="39" data-countryCode="VAT">Vatican City Holy See</option>
+                    <option value="58" data-countryCode="VEN">Venezuela</option>
+                    <option value="84" data-countryCode="VNM">Vietnam</option>
+                    <option value="1" data-countryCode="VGB">Virgin Islands, British</option>
+                    <option value="1" data-countryCode="VIR">Virgin Islands, U.S</option>
+                    <option value="681" data-countryCode="WLF">Wallis and Futuna</option>
+                    <option value="212" data-countryCode="ESH">Western Sahara</option>
+                    <option value="967" data-countryCode="YEM">Yemen</option>
+                    <option value="260" data-countryCode="ZMB">Zambia</option>
+                    <option value="263" data-countryCode="ZWE">Zimbabwe</option>
+                </select>
+                <!-- total - 252 Countries -->
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= phone.label %></label>
+                <div class="flex">
+                    <input type="text" id="country-code" readonly 
+                        class="mt-1 w-20 mr-2 px-3 py-2 bg-gray-100 dark:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-gray-900 dark:text-gray-100">
+                    <input type="tel" id="phone" name="phone" required 
+                        class="mt-1 flex-grow px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100"
+                        pattern="[0-9]{6,14}" placeholder="<%= phone.label %>"
+                        oninvalid="this.setCustomValidity('<%= phone.patternMessage %>')"
+                        oninput="this.setCustomValidity('')">
+                </div>
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= email.label %></label>
+                <input type="email" id="email" name="email" required
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"placeholder="<%= email.placeholder %>" 
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100"
+                    oninvalid="this.setCustomValidity('<%= email.patternMessage %>')"
+                    oninput="this.setCustomValidity('')">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= password.label %></label>
+                <input type="password" id="password" name="password" required 
+                    placeholder="<%= password.placeholder %>"
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100"
+                    oninvalid="this.setCustomValidity('<%= password.patternMessage %>')"
+                    oninput="this.setCustomValidity('')">
+            </div>
+            <div>
+                <label for="confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300"><%= confirmPassword.label %></label>
+                <input type="password" id="confirm-password" name="confirmPassword" required
+                    placeholder="<%= confirmPassword.placeholder %>"
+                    class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-gray-900 dark:text-gray-100"
+                    oninvalid="this.setCustomValidity('<%= confirmPassword.patternMessage %>')"
+                    oninput="this.setCustomValidity('')">
+            </div>
+            <div class="social-signup mt-4 space-y-3">
+                <a href="/auth/google" class="btn btn-google flex justify-center items-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+                    bg-white dark:bg-gray-800 
+                    text-gray-700 dark:text-gray-200 
+                    hover:bg-gray-50 dark:hover:bg-gray-700 
+                    hover:border-gray-400 dark:hover:border-gray-500 
+                    transition duration-300 ease-in-out 
+                    space-x-2 <%= language === 'ar' ? 'space-x-reverse' : '' %>">
+                    <i class="fab fa-google text-lg text-red-500 dark:text-red-400"></i>
+                    <span><%= googleSigninButton %></span>
+                </a>
+                <a href="#" class="btn btn-facebook flex justify-center items-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+                    bg-white dark:bg-gray-800 
+                    text-gray-700 dark:text-gray-200
+                    hover:bg-gray-50 dark:hover:bg-gray-700 
+                    hover:border-gray-400 dark:hover:border-gray-500 
+                    transition duration-300 ease-in-out 
+                    space-x-2 <%= language === 'ar' ? 'space-x-reverse' : '' %>">
+                    <i class="fab fa-facebook-f text-lg text-blue-600 dark:text-blue-500"></i>
+                    <span><%= facebookSigninButton %></span>
+                </a>
+            </div>
+            <div>
+                <button type="submit" 
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
+                    bg-primary-600 hover:bg-primary-700 
+                    dark:bg-primary-900 dark:hover:bg-primary-800 
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <%= registerButton %>
+                </button>
+            </div>
+            <div class="text-center">
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    <%= question %> 
+                    <a href="/login" class="font-medium text-primary-600 hover:text-primary-500">
+                        <%= loginButton %>
+                    </a>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const countrySelect = document.getElementById('country');
+        const countryCodeInput = document.getElementById('country-code');
+
+        countrySelect.addEventListener('change', (e) => {
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            const countryCode = selectedOption.getAttribute('value');
+            countryCodeInput.value = countryCode ? `+${countryCode}` : '';
+        });
+
+        // Set default empty state
+        countryCodeInput.value = '';
+    </script>
+    <script src="/static/js/theme.js"></script>
+    <script src="/static/js/register.js"></script>
+
+</body>
+</html>

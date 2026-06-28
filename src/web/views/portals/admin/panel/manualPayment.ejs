@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="<%= language %>" dir="<%= language === 'ar' ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= language === 'ar' ? 'إدارة الدفع اليدوي' : 'Manage Manual Payment' %></title>
+    <script src="/static/scripts/tailwind3.4.16.js"></script>
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="/static/styles/animate.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#3B82F6',
+                            '50': '#EBF2FF',
+                            '100': '#D6E4FF',
+                            '200': '#ADCAFD',
+                            '300': '#85B0FC',
+                            '400': '#5C96FB',
+                            '500': '#3B82F6',
+                            '600': '#0B61EF',
+                            '700': '#084BBD',
+                            '800': '#06368A',
+                            '900': '#042158'
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col">
+        <!-- Top Navbar -->
+        <%- include('../../../partials/admin/adminPanelNav') %>
+        
+        <!-- Sidebar and Main Content -->
+        <div class="flex flex-column pt-12">
+            <!-- Sidebar -->
+            <%- include('../../../partials/admin/adminPanelSidebar') %>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-6 md:<%= language === 'ar' ? 'mr-64' : 'ml-64' %>">
+            <div class="max-w-7xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                        <%= language === 'ar' ? 'إدارة الدفع اليدوي' : 'Manage Manual Payment' %>
+                    </h1>
+                    
+                    <!-- Loading Indicator -->
+                    <div id="loading-indicator" class="flex justify-center items-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+                    </div>
+
+                    <!-- No Requests Message -->
+                    <div id="no-orders-message" class="hidden text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-white">
+                            <%= language === 'ar' ? 'لا يوجد طلبات دفع' : 'No payment requests found' %>
+                        </h3>
+                    </div>
+
+                    <!-- Requests Table -->
+                    <%- include('./partials/manualPayment/table') %>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Request Details Modal -->
+    <%- include('./partials/manualPayment/modal') %>
+     
+<script src="/static/js/sweetalert2.js"></script>
+<script src="/static/js/custom.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const noOrdersMessage = document.getElementById('no-orders-message');
+            const ordersTable = document.getElementById('orders-table');
+            const ordersTableBody = document.getElementById('orders-table-body');
+            const orderDetailsModal = document.getElementById('order-details-modal');
+            const orderIdElement = document.getElementById('order-id');
+            const orderDetailsContent = document.getElementById('order-details-content');
+            const updateStatusForm = document.getElementById('update-status-form');
+            const statusSelect = document.getElementById('status-select');
+            const statusMessage = document.getElementById('status-message');
+            const cancelUpdateBtn = document.getElementById('cancel-update');
+            
+            let currentOrderId = null;
+
+            // Fetch orders from the API
+            async function fetchOrders() {
+                try {
+                    const response = await fetch('/api/v1/admin/manage/manual-payments', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch orders');
+                    }
+                    const data = await response.json();
+                    return data.results || [];
+                } catch (error) {
+                    console.error('Error fetching orders:', error);
+                    return [];
+                }
+            }
+
+            // Render orders table
+            async function renderOrders() {
+                try {
+                    const orders = await fetchOrders();
+                    
+                    if (orders.length === 0) {
+                        loadingIndicator.classList.add('hidden');
+                        noOrdersMessage.classList.remove('hidden');
+                        return;
+                    }
+
+                    ordersTableBody.innerHTML = '';
+                    
+                    orders.forEach(order => {
+                        const row = document.createElement('tr');
+                        
+                        // Format date
+                        const orderDate = new Date(order.createdAt);
+                        const formattedDate = orderDate.toLocaleDateString("<%= language === 'ar' ? 'ar-EG' : 'en-US' %>", {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+
+                        // Format status
+                        let statusClass = '';
+                        let statusText = '';
+                        
+                        switch(order.status) {
+                            case 'accepted':
+                                statusClass = 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100';
+                                statusText = "<%= language === 'ar' ? 'مقبول' : 'Accepted' %>";
+                                break;
+                            case 'rejected':
+                                statusClass = 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
+                                statusText = "<%= language === 'ar' ? 'مرفوض' : 'Rejected' %>";
+                                break;
+                            default: // pending
+                                statusClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100';
+                                statusText = "<%= language === 'ar' ? 'قيد الانتظار' : 'Pending' %>";
+                        }
+                        
+                        row.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                #${order.id}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                ${order?.bank?.name || '-'}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                ${order.amount} <span>${'$'}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                                    ${statusText}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                ${order?.noticeImagePath && order?.noticeImagePath?.length > 0 ? `<a href="/app/admin/panel/manual-payment/noticeImage/${order.id}" target="_blank" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"><%= language === 'ar' ? 'اضغط هنا لعرض الايصال' : 'Click to view receipt' %></a>` : '-'}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                ${formattedDate}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button onclick="viewOrderDetails('${order.id}')" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300">
+                                    <%= language === 'ar' ? 'عرض التفاصيل' : 'View Details' %>
+                                </button>
+                            </td>
+                        `;
+                        
+                        ordersTableBody.appendChild(row);
+                    });
+
+                    loadingIndicator.classList.add('hidden');
+                    ordersTable.classList.remove('hidden');
+                    
+                } catch (error) {
+                    console.error('Error rendering orders:', error);
+                    loadingIndicator.classList.add('hidden');
+                    errorAlert("<%= language === 'ar' ? 'حدث خطا اثناء تحميل الطلبات' : 'Error loading requests' %>");
+                }
+            }
+
+            // View order details
+            window.viewOrderDetails = async (orderId) => {
+                try {
+                    currentOrderId = orderId;
+                    const response = await fetch(`/api/v1/admin/manage/manual-payments/${orderId}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch order details');
+                    }
+                    const { results: order } = await response.json();
+                    
+                    // Set order ID
+                    orderIdElement.textContent = order.id;
+                    
+                    // Format order date
+                    const orderDate = new Date(order.createdAt);
+                    const formattedDate = orderDate.toLocaleDateString("<%= language === 'ar' ? 'ar-EG' : 'en-US' %>", {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    // Format status
+                    let statusText = '';
+                    switch(order.status) {
+                        case 'accepted':
+                            statusText = "<%= language === 'ar' ? 'مقبول' : 'Accepted' %>";
+                            break;
+                        case 'rejected':
+                            statusText = "<%= language === 'ar' ? 'مرفوض' : 'Rejected' %>";
+                            break;
+                        default: // pending
+                            statusText = "<%= language === 'ar' ? 'قيد الانتظار' : 'Pending' %>";
+                    }
+                    
+                    // Build order items HTML
+                    let itemsHtml = '';
+                    if (order && typeof order === 'object' && Object.keys(order).length > 0) {
+                        itemsHtml = `
+                            <div class="mt-4">
+                                <h4 class="font-medium text-gray-900 dark:text-white">
+                                    <%= language === 'ar' ? 'تفاصيل الطلب' : 'Request Details' %>
+                                </h4>
+                                <div class="border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden">
+                                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <thead class="bg-gray-50 dark:bg-gray-700">
+                                            <tr>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'البنك' : 'Bank' %>
+                                                </th>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'المبلغ' : 'Amount' %>
+                                                </th>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'الايصال' : 'Receipt' %>
+                                                </th>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'بيانات النموذج' : 'Form Data' %>
+                                                </th>
+                                                <th class="px-6 py-3 <%= language === 'ar' ? 'text-right' : 'text-left' %> text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                    <%= language === 'ar' ? 'تاريخ الطلب' : 'Request Date' %>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                            ${`
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${order?.bank?.name}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${order.amount} <span>$</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${order?.noticeImagePath && order?.noticeImagePath?.length > 0 ? `<a href="/app/admin/panel/manual-payment/noticeImage/${order.id}" target="_blank" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"><%= language === 'ar' ? 'اضغط هنا للعرض' : 'Click to view' %></a>` : '-'}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${order?.dialogForms !== null && (order?.dialogForms && Object.keys(order?.dialogForms)?.length > 0) ? `<a href="/app/admin/panel/manual-payment/info/${order.id}" target="_blank" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"><%= language === 'ar' ? 'اضغط هنا للعرض' : 'Click to view' %></a>` : '-'}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                        ${formattedDate}
+                                                    </td>
+                                                </tr>
+                                            `}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Set order details content
+                    orderDetailsContent.innerHTML = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900 dark:text-white">
+                                    <%= language === 'ar' ? 'معلومات العميل' : 'Customer Information' %>
+                                </h4>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                                    <strong><%= language === 'ar' ? 'الاسم:' : 'Name:' %></strong> ${order.user?.firstName || 'N/A'} ${order.user?.lastName || 'N/A'}<br>
+                                    <strong><%= language === 'ar' ? 'البريد الالكتروني:' : 'Email:' %></strong> ${order.user?.email || 'N/A'}<br>
+                                    <strong><%= language === 'ar' ? 'رقم الهاتف:' : 'Phone Number:' %></strong> ${order.user?.phoneNumber || 'N/A'}
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900 dark:text-white">
+                                    <%= language === 'ar' ? 'معلومات الطلب' : 'Request Information' %>
+                                </h4>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                                    <strong><%= language === 'ar' ? 'رقم الطلب:' : 'Request ID:' %></strong> ${order.id}<br>
+                                    <strong><%= language === 'ar' ? 'تاريخ الطلب:' : 'Request Date:' %></strong> ${formattedDate}<br>
+                                    <strong><%= language === 'ar' ? 'الحالة:' : 'Status:' %></strong> ${statusText}<br>
+                                    <strong><%= language === 'ar' ? 'المبلغ:' : 'Amount:' %></strong> ${order.amount} <span>$</span>
+                                </p>
+                            </div>
+                        </div>
+                        ${itemsHtml}
+                    `;
+                    
+                    // Set current status in the select
+                    statusSelect.value = order.status;
+                    
+                    // Show the modal
+                    orderDetailsModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                    
+                } catch (error) {
+                    console.error('Error fetching order details:', error);
+                    errorAlert("<%= language === 'ar' ? 'حدث خطأ أثناء تحميل تفاصيل الطلب' : 'Error loading order details' %>");
+                }
+            };
+
+            // Close modal
+            function closeModal() {
+                orderDetailsModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                currentOrderId = null;
+                statusMessage.value = '';
+            }
+
+            // Event listeners
+            cancelUpdateBtn.addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            orderDetailsModal.addEventListener('click', (e) => {
+                if (e.target === orderDetailsModal) {
+                    closeModal();
+                }
+            });
+
+            // Handle status update
+            updateStatusForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (!currentOrderId || !statusMessage.value.trim()) {
+                    errorAlert("<%= language === 'ar' ? 'الرجاء إدخال رسالة للمستخدم' : 'Please enter a message for the user' %>");
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`/api/v1/admin/manage/manual-payments/${currentOrderId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({
+                            status: statusSelect.value,
+                            message: statusMessage.value.trim()
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to update order status');
+                    }
+                    
+                    // Refresh orders list
+                    await renderOrders();
+                    closeModal();
+                    
+                    // Show success message
+                    successAlert("<%= language === 'ar' ? 'تم تحديث حالة الطلب بنجاح' : 'Order status updated successfully' %>");
+                    
+                } catch (error) {
+                    console.error('Error updating order status:', error);
+                    errorAlert("<%= language === 'ar' ? 'حدث خطأ أثناء تحديث حالة الطلب' : 'Error updating order status' %>");
+                }
+            });
+
+            // Initialize
+            renderOrders();
+        });
+    </script>
+    <script>
+        // Toggle dark mode
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', () => {
+          document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+    
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+    
+        // Toggle sidebar on mobile
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        toggleSidebarBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('-translate-x-full');
+          sidebar.classList.toggle('translate-x-0');
+        });
+    
+        // Toggle language dropdown
+        const languageDropdownBtn = document.getElementById('language-dropdown-btn');
+        const languageDropdown = document.getElementById('language-dropdown');
+        languageDropdownBtn.addEventListener('click', () => {
+          languageDropdown.classList.toggle('hidden');
+        });
+        
+        // User menu toggle
+        const userMenuBtn = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        userMenuBtn.addEventListener('click', () => {
+          userMenu.classList.toggle('hidden');
+        });
+        
+        // Close user menu when clicking outside
+        document.addEventListener('click', (event) => {
+          if (!userMenuBtn.contains(event.target) && !userMenu.contains(event.target)) {
+            userMenu.classList.add('hidden');
+          }
+        });
+    
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch user profile information
+                const response = await fetch('/app/profile');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user profile');
+                }
+    
+                const userData = await response.json();
+    
+                // Update user menu details
+                const userNameElement = document.querySelector('#user-menu .text-sm.font-medium');
+                const userEmailElement = document.querySelector('#user-menu .text-xs.text-gray-500');
+                const sidebarNameElement = document.querySelector('#user-profile p.font-medium');
+                const sidebarRoleElement = document.querySelector('#user-profile p.text-xs');
+    
+                if (userNameElement) {
+                    userNameElement.textContent = userData.firstName 
+                        ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                        : 'User';
+                }
+    
+                if (userEmailElement) {
+                    userEmailElement.textContent = userData.email || 'user@example.com';
+                }
+    
+                if (sidebarNameElement) {
+                    sidebarNameElement.textContent = userData.firstName 
+                        ? `${userData.firstName} ${userData.lastName || ''}`.trim() 
+                        : 'User';
+                }
+    
+                if (sidebarRoleElement) {
+                    sidebarRoleElement.textContent = userData.role || 'Account';
+                }
+    
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+                // Optionally, show a user-friendly error message
+            }
+    
+            // User menu toggle functionality
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+    
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+    
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+
+        // Toggle dropdown visibility
+        userMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event from bubbling
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenu.classList.contains('hidden') && 
+                !userMenu.contains(e.target) && 
+                e.target !== userMenuButton) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    });
+    </script>
+    <script src="/static/js/profile.js"></script>
+    <script src="/static/js/language.js"></script>
+    <script src="/static/js/notification-bell.js"></script>
+    <%- include('../../../partials/footer') %>
+</body>
+</html>
