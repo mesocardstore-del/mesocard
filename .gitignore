@@ -1,0 +1,17 @@
+.env
+package-lock.json
+/node_modules
+TO-DO.txt
+/src/test.js
+
+client/private_uploads
+client/public/static/data
+client/public/static/images
+client/public/static/uploads/profiles
+client/public/static/data
+client/public/uploads
+/logs
+bash.exe.stackdump
+src/config/config.json
+src/migrations
+src/seeders

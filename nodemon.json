@@ -1,0 +1,11 @@
+{
+  "ignore": [
+    "public/",
+    "public/**/*",
+    "client/",
+    "client/**/*",
+    "**/*.test.js",
+    "**/*.spec.js"
+  ],
+  "ext": "js,mjs,json"
+}
